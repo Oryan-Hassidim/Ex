@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>609a75ca-e59d-4290-a303-a755402488b3</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Ex1.py</StartupFile>
+    <StartupFile>hello_turtle.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,7 +22,11 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Ex1.py" />
+    <Compile Include="math_print.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="turtle try.py" />
+    <Compile Include="hello_turtle.py" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.10" />
