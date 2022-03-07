@@ -30,11 +30,11 @@ def hypotenuse():
 
 def pi():
     """Prints the constant value Pi (π)."""
-    print(pi)
+    print(math.pi)
 
 def e():
     """Prints the constant value e."""
-    print(e)
+    print(math.e)
 
 def squares_area():
     """Prints the area of squares with side lenght betwwen
