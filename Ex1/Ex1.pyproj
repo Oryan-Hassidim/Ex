@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>609a75ca-e59d-4290-a303-a755402488b3</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>hello_turtle.py</StartupFile>
+    <StartupFile>turtle try.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
