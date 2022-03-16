@@ -6,11 +6,12 @@
 #              number from 3 numbers, and chek this function.
 # STUDENTS I DISCUSSED THE EXERCISE WITH: --
 # WEB PAGES I USED: --
-# NOTES: 0,0.0,-0.0 => check about same falue in different
-#                      types and forms.
+# NOTES: randoms => check for random numbers and negatives.
 #        0,float('0.'+'0'*100+'1'),float('-0.'+'0'*100+'1')
 #        => chek very small change.
 #############################################################
+
+from random import randint, random
 
 # 3
 def largest_and_smallest(a, b, c):
@@ -28,18 +29,26 @@ def largest_and_smallest(a, b, c):
 
 # 8
 def check_largest_and_smallest():
-    """Checks the largest_and_smallest function on some
+    """Checks the largest_and_smallest() function on some
     inputs"""
+
     if largest_and_smallest(17, 1, 6) != (17, 1):
         return False
+    
     if largest_and_smallest(1, 17, 6) != (17, 1):
         return False
+    
     if largest_and_smallest(1, 1, 2) != (2, 1):
         return False
-    if largest_and_smallest(0, 0.0, -0.0) != (0, 0):
+    
+    a, b, c = randint(-200, 200), randint(-200, 200), randint(-200, 200)
+    l,s = largest_and_smallest(-a,-b,-c)
+    if largest_and_smallest(a,b,c) != (-s,-l):
         return False
+    
     if largest_and_smallest(
         0, float("0." + "0" * 100 + "1"), float("-0." + "0" * 100 + "1")
     ) != (10 ** -101, -(10 ** -101)):
         return False
+
     return True

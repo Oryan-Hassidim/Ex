@@ -19,8 +19,8 @@ opers = {
 # 1
 def calculate_mathematical_expression(arg1, arg2, oper):
     """Gets two arguments (numbers) and operations ('+', '-', 
-    '*' or ':' and returns the evaluations. if there is an erorr,
-    returns None.)"""
+    '*' or ':') and returns the evaluations. if there is an erorr,
+    returns None."""
     if len(oper) != 1 or (oper not in "+-*:"):
         return None
     if (arg2, oper) == (0, ":"):
