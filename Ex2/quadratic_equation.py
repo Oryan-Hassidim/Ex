@@ -31,8 +31,7 @@ def quadratic_equation(a, b, c):
 def quadratic_equation_user_input():
     """Gets the coefficients  a, b and c of quadratic equation
     from the user, and prints the roots of thart equation."""
-    print("Insert coefficients a, b, and c:", end=" ")
-    params = input()
+    params = input("Insert coefficients a, b, and c: ")
     a, b, c = map(float, params.split(" "))
     if a == 0:
         print("The parameter 'a' may not equal 0")

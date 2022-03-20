@@ -2,15 +2,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>fb77890e-0d03-4c52-a79b-01fa3a2eb901</ProjectGuid>
+    <ProjectGuid>6e64168d-e54c-46ed-81ce-b6e14c897af4</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>quadratic_equation.py</StartupFile>
+    <StartupFile>ex3.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>Ex2</Name>
-    <RootNamespace>Ex2</RootNamespace>
+    <Name>Ex3</Name>
+    <RootNamespace>Ex3</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,27 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="calculate_mathematical_expression.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="lab2.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="largest_and_smallest.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="list_of_functions.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="quadratic_equation.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="shapes.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="temperature.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ex3.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
