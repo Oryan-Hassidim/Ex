@@ -14,7 +14,7 @@ from math import sqrt
 
 # 4
 def quadratic_equation(a, b, c):
-    """Gets the coefficients  a, b and c of quadratic equation
+    """Takes the coefficients  a, b and c of quadratic equation
     and returns its tuple of its roots.
     - if there is only one - the second part of the tuple is None.
     - if ther are no roots - return (None, None)."""
@@ -29,7 +29,7 @@ def quadratic_equation(a, b, c):
 
 # 5
 def quadratic_equation_user_input():
-    """Gets the coefficients  a, b and c of quadratic equation
+    """Takes the coefficients  a, b and c of quadratic equation
     from the user, and prints the roots of thart equation."""
     params = input("Insert coefficients a, b, and c: ")
     a, b, c = map(float, params.split(" "))

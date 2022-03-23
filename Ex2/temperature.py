@@ -13,7 +13,7 @@
 # 7
 # better: is_vormir_safe(min, *temps)
 def is_vormir_safe(min, temp1, temp2, temp3): 
-    """Gets the minimum and three numbers to checks if 2 from 
+    """Takes the minimum and three numbers to checks if 2 from 
     the 3 are greater than the minimum.
     if there are - returns True, else - returns False."""
     if temp1 > min:

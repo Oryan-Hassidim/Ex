@@ -18,7 +18,7 @@ opers = {
 
 # 1
 def calculate_mathematical_expression(arg1, arg2, oper):
-    """Gets two arguments (numbers) and operations ('+', '-', 
+    """Takes two arguments (numbers) and operations ('+', '-', 
     '*' or ':') and returns the evaluations. if there is an erorr,
     returns None."""
     if len(oper) != 1 or (oper not in "+-*:"):
@@ -29,7 +29,7 @@ def calculate_mathematical_expression(arg1, arg2, oper):
 
 #2
 def calculate_from_string(calc):
-    """Gets a string of simple calculation of template "x + y"
+    """Takes a string of simple calculation of template "x + y"
     and returns the evaluation."""
     if calc.count(' ') != 2:
         return None

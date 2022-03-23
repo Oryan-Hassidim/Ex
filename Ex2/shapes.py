@@ -2,7 +2,7 @@
 # FILE : shapes.py
 # WRITER : Oryan Hassidim , oryan.hassidim , 319131579
 # EXERCISE : intro2cs2 Ex2 2022
-# DESCRIPTION: Function that gets from the user shape id and
+# DESCRIPTION: Function that Takes from the user shape id and
 #              its dimentions and returns the area of that
 #              shape.
 # STUDENTS I DISCUSSED THE EXERCISE WITH: --
@@ -42,7 +42,7 @@ shapes = [circle, rect, triangle]
 
 # 6
 def shape_area():
-    """Gets from the user shape id (1=circle, 2=rectangle,\
+    """Takes from the user shape id (1=circle, 2=rectangle,\
     3=triangle)
     and its dimentions and returns the area of that shape.
     for unknown id or negative dimention returns None."""
