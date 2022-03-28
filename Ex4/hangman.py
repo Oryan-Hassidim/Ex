@@ -9,6 +9,8 @@
 #############################################################
 
 from hangman_helper import *
+from re import match
+
 
 WELCOME_MESSAGE = "Welcome to Hangman!"
 WIN_MESSAGE = """You won! Your score is {}.
@@ -46,6 +48,40 @@ def update_word_pattern(word, pattern, letter):
         else:
             new_pattern += pattern[i]
     return new_pattern
+
+
+def partition(predicate, sequance):
+    """
+    Takes in a predicate and a sequance.
+    Returns a tuple of two lists.
+    The first list contains the elements that satisfy the predicate.
+    The second list contains the elements that don't.
+    """
+
+    true_list = []
+    false_list = []
+    for element in sequance:
+        if predicate(element):
+            true_list.append(element)
+        else:
+            false_list.append(element)
+    return true_list, false_list
+
+
+def filter_words_list(words, pattern, wrong_guess_lst):
+    """
+    Takes in a list of words and a pattern.
+    Returns a list of words that match the pattern.
+    """
+    wrong_guess_letters, wrong_guess_words = partition(
+        lambda g: len(g) >= 1, wrong_guess_lst)
+    regex_pattern = "".join(wrong_guess_letters + [pattern.replace("_", "")])
+    regex_pattern = f"[^{regex_pattern}]"
+    regex_pattern = pattern.replace("_", regex_pattern)
+    return [word for word in words if
+            len(word) == len(pattern) and
+            word not in wrong_guess_words and
+            match(regex_pattern, word)]
 
 
 def run_single_game(words_list, score):
@@ -92,11 +128,31 @@ def run_single_game(words_list, score):
             pattern = whole_word
             return WIN_MESSAGE
         else:
-            if value not in wronk_words: wronk_words.append(value)
+            if value not in wronk_words:
+                wronk_words.append(value)
             return WRONG_GUESS_MESSAGE
 
-    def hint(value):
-        return "Not implemented yet."
+    def hint(_):
+        nonlocal score
+        nonlocal pattern
+        nonlocal wronk_words
+        nonlocal wronk_letters
+        nonlocal whole_word
+
+        score -= 1
+
+        all_hints = filter_words_list(
+            words_list, pattern, wronk_words + wronk_letters)
+        n = len(all_hints)
+
+        hints = []
+
+        if n > HINT_LENGTH:
+            for i in range(HINT_LENGTH):
+                hints.append(all_hints[(i * n) // HINT_LENGTH])
+        else: hints = all_hints
+        show_suggestions(hints)
+        return "What now?" if score > 0 else "Why did you do that?"
 
     options = {LETTER: letter, WORD: word, HINT: hint}
 
@@ -116,7 +172,12 @@ def run_single_game(words_list, score):
 
     return score
 
+
 def main():
+    """
+    Runs the game until the player wants to quit.
+    """
+
     words = load_words()
     games = 0
     score = POINTS_INITIAL
@@ -130,6 +191,7 @@ def main():
         elif score == 0 and play_again(GAME_OVER_MESSAGE.format(games, score)):
             games = 0
             score = POINTS_INITIAL
+
 
 if __name__ == "__main__":
     main()
