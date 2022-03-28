@@ -74,8 +74,8 @@ def filter_words_list(words, pattern, wrong_guess_lst):
     Returns a list of words that match the pattern.
     """
     wrong_guess_letters, wrong_guess_words = partition(
-        lambda g: len(g) >= 1, wrong_guess_lst)
-    regex_pattern = "".join(wrong_guess_letters + [pattern.replace("_", "")])
+        lambda g: len(g) == 1, wrong_guess_lst)
+    regex_pattern = "".join(wrong_guess_letters + list(set(pattern.replace("_", ""))))
     regex_pattern = f"[^{regex_pattern}]"
     regex_pattern = pattern.replace("_", regex_pattern)
     return [word for word in words if
@@ -194,4 +194,5 @@ def main():
 
 
 if __name__ == "__main__":
+    print(filter_words_list(load_words(), "s_immin_", ['a', 'e', 'o', 'u', 't', 'swimming']))
     main()
