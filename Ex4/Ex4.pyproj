@@ -30,9 +30,18 @@
     <Compile Include="lab4.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TESTS\autotest.py" />
+    <Compile Include="TESTS\ex4tests.py" />
+    <Compile Include="TESTS\hangman.py" />
+    <Compile Include="TESTS\hangman_helper.py" />
+    <Compile Include="TESTS\test.py" />
+    <Compile Include="TESTS\testrunners.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="words.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TESTS\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>Ex1</Name>
     <RootNamespace>Ex1</RootNamespace>
-    <InterpreterId>Global|VisualStudio|WPy64-3730b4</InterpreterId>
+    <InterpreterId>Global|VisualStudio|python-3.7.3.amd64</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.10" />
+    <InterpreterReference Include="Global|VisualStudio|python-3.7.3.amd64" />
     <InterpreterReference Include="Global|VisualStudio|WPy64-3730b4" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

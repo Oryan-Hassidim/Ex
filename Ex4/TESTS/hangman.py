@@ -167,4 +167,5 @@ def main():
 
 
 if __name__ == "__main__":
+    print(filter_words_list(load_words(), "s_immin_", ['a', 'e', 'o', 'u', 't', 'swimming']))
     main()
