@@ -63,3 +63,9 @@ def run_game():
         get_next_player()
     print("Game over")
     print("Player " + ("1" if player else "2") + " won!")
+
+def main():
+    flag = True
+    while flag:
+        run_game()
+        flag = input("Play again? (y/n)") == "y"

@@ -26,6 +26,8 @@ SINGLE_LETTER_MESSAGE = "You must enter a single letter."
 ALREADY_GUESSED_MESSAGE = "You have already guessed this letter."
 CORRECT_LETTER_GUESS_MESSAGE = "Correct Guess!, {} times in the word."
 WRONG_GUESS_MESSAGE = "Wrong Guess!"
+HINT_OK_MESSAGE = "What now?"
+HINT_NOT_OK_MESSAGE = "Why did you do that?"
 PLAY_AGAIN_MESSAGE = """You played {} games.
 You have now {} scores.
 Do you want to play again?"""
@@ -125,7 +127,7 @@ def run_single_game(words_list, score):
                 hints.append(all_hints[(i * n) // HINT_LENGTH])
         else: hints = all_hints
         show_suggestions(hints)
-        return "What now?" if score > 0 else "Why did you do that?"
+        return HINT_OK_MESSAGE if score > 0 else HINT_NOT_OK_MESSAGE
 
     options = {LETTER: letter, WORD: word, HINT: hint}
 
@@ -167,5 +169,5 @@ def main():
 
 
 if __name__ == "__main__":
-    print(filter_words_list(load_words(), "s_immin_", ['a', 'e', 'o', 'u', 't', 'swimming']))
+    print(filter_words_list(["abc","aef","ggg"], "___", []))
     main()

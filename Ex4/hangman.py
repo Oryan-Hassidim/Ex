@@ -8,8 +8,8 @@
 # NOTES:
 #############################################################
 
-from hangman_helper import *
 from re import match
+from hangman_helper import *
 
 
 WELCOME_MESSAGE = "Welcome to Hangman!"
@@ -26,6 +26,8 @@ SINGLE_LETTER_MESSAGE = "You must enter a single letter."
 ALREADY_GUESSED_MESSAGE = "You have already guessed this letter."
 CORRECT_LETTER_GUESS_MESSAGE = "Correct Guess!, {} times in the word."
 WRONG_GUESS_MESSAGE = "Wrong Guess!"
+HINT_OK_MESSAGE = "What now?"
+HINT_NOT_OK_MESSAGE = "Why did you do that?"
 PLAY_AGAIN_MESSAGE = """You played {} games.
 You have now {} scores.
 Do you want to play again?"""
@@ -42,13 +44,12 @@ def update_word_pattern(word, pattern, letter):
     in the right place.
     """
     new_pattern = ""
-    for i in range(len(word)):
-        if word[i] == letter:
+    for i, l in enumerate(word):
+        if l == letter:
             new_pattern += letter
         else:
             new_pattern += pattern[i]
     return new_pattern
-
 
 
 def filter_words_list(words, pattern, wrong_guess_lst):
@@ -59,9 +60,11 @@ def filter_words_list(words, pattern, wrong_guess_lst):
     regex_pattern = "".join(wrong_guess_lst + list(set(pattern.replace("_", ""))))
     regex_pattern = f"[^{regex_pattern}]" if regex_pattern != "" else "."
     regex_pattern = pattern.replace("_", regex_pattern)
-    return [word for word in words if
-            len(word) == len(pattern) and
-            match(regex_pattern, word)]
+    return [
+        word
+        for word in words
+        if len(word) == len(pattern) and match(regex_pattern, word)
+    ]
 
 
 def run_single_game(words_list, score):
@@ -80,7 +83,7 @@ def run_single_game(words_list, score):
         nonlocal wronk_letters
         nonlocal whole_word
 
-        if len(value) != 1 or not 'a' <= value <= 'z':
+        if len(value) != 1 or not "a" <= value <= "z":
             return SINGLE_LETTER_MESSAGE
         if value in wronk_letters or value in pattern:
             return ALREADY_GUESSED_MESSAGE
@@ -90,9 +93,8 @@ def run_single_game(words_list, score):
             instances = whole_word.count(value)
             score += (instances * (instances + 1)) // 2
             return CORRECT_LETTER_GUESS_MESSAGE.format(instances)
-        else:
-            wronk_letters.append(value)
-            return WRONG_GUESS_MESSAGE
+        wronk_letters.append(value)
+        return WRONG_GUESS_MESSAGE
 
     def word(value):
         nonlocal score
@@ -101,7 +103,7 @@ def run_single_game(words_list, score):
 
         score -= 1
         if value == whole_word:
-            additional_letters = pattern.count('_')
+            additional_letters = pattern.count("_")
             score += (additional_letters * (additional_letters + 1)) // 2
             pattern = whole_word
             return WIN_MESSAGE
@@ -123,9 +125,10 @@ def run_single_game(words_list, score):
         if n > HINT_LENGTH:
             for i in range(HINT_LENGTH):
                 hints.append(all_hints[(i * n) // HINT_LENGTH])
-        else: hints = all_hints
+        else:
+            hints = all_hints
         show_suggestions(hints)
-        return "What now?" if score > 0 else "Why did you do that?"
+        return HINT_OK_MESSAGE if score > 0 else HINT_NOT_OK_MESSAGE
 
     options = {LETTER: letter, WORD: word, HINT: hint}
 
@@ -137,11 +140,9 @@ def run_single_game(words_list, score):
         message = options[option](value)
 
     if pattern == whole_word:
-        display_state(pattern, wronk_letters,
-                      score, WIN_MESSAGE.format(score))
+        display_state(pattern, wronk_letters, score, WIN_MESSAGE.format(score))
     else:
-        display_state(pattern, wronk_letters,
-                      score, LOSE_MESSAGE.format(whole_word))
+        display_state(pattern, wronk_letters, score, LOSE_MESSAGE.format(whole_word))
 
     return score
 
@@ -167,4 +168,5 @@ def main():
 
 
 if __name__ == "__main__":
+    print(filter_words_list(["abc", "aef", "ggg"], "___", []))
     main()

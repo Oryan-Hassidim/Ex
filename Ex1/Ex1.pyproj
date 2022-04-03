@@ -34,7 +34,6 @@
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.10" />
     <InterpreterReference Include="Global|VisualStudio|python-3.7.3.amd64" />
-    <InterpreterReference Include="Global|VisualStudio|WPy64-3730b4" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

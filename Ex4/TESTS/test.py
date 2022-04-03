@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+from pathlib import Path
+
+source_path = Path(__file__).resolve()
+source_dir = source_path.parent
+
+import shutil
+
+shutil.copy(f"{source_dir}/../hangman.py", f"{source_dir}/hangman.py")
+
 from sys import argv,stdout
 from importlib import import_module
 import operator as op
