@@ -73,30 +73,6 @@ def index_words(word_list):
     return index_dict
 
 
-def find_in_lists(indexed_words, direction_index, lists):
-    """
-    Finds all occurances of sub-lists in given list of lists.
-    Collect them to the times array which attached to the sublist
-    in the given index (for parrall proccessing).
-    """
-    for lst in lists:
-        length = len(lst)
-        for i, char in enumerate(lst):
-            # all words which starts in the current letter.
-            group = indexed_words.get(char)
-            if group is None:
-                continue
-            for word_length, words in group.items():
-                # check if there is enough space to the word
-                if word_length > length - i:
-                    continue
-                for word, times in words:
-                    # find the *first* correct word, if exists.
-                    if word == lst[i : i + word_length]:
-                        times[direction_index] += 1
-                        break
-
-
 def calculate_diagonal_directions(matrix):
     """
     Takes a matrix as a parameter ang returns all diagonal from
@@ -194,6 +170,30 @@ def calculate_directions(matrix, directions):
             result += flip_matrix(transposed)
 
     return result
+
+
+def find_in_lists(indexed_words, direction_index, lists):
+    """
+    Finds all occurances of sub-lists in given list of lists.
+    Collect them to the times array which attached to the sublist
+    in the given index (for parrall proccessing).
+    """
+    for lst in lists:
+        length = len(lst)
+        for i, char in enumerate(lst):
+            # all words which starts in the current letter.
+            group = indexed_words.get(char)
+            if group is None:
+                continue
+            for word_length, words in group.items():
+                # check if there is enough space to the word
+                if word_length > length - i:
+                    continue
+                for word, times in words:
+                    # find the *first* correct word, if exists.
+                    if word == lst[i : i + word_length]:
+                        times[direction_index] += 1
+                        break
 
 
 def find_words(word_list, matrix, directions):
