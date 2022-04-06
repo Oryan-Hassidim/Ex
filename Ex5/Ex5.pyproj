@@ -15,7 +15,7 @@
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>"C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\word_list3.txt" "C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\mat3.txt" "C:\users\oryan\desktop\output.txt" udlrwxyz</CommandLineArguments>
+    <CommandLineArguments>"C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\word_list.txt" "C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\mat.txt" "C:\users\oryan\desktop\output.txt" udlrwxyz</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

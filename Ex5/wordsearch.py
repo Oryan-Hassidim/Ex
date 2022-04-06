@@ -11,7 +11,8 @@
 # NOTES: A lot of dictionaries for better performance.
 #############################################################
 
-# from multiprocessing import Pool
+from multiprocessing import Process, cpu_count
+from math import ceil
 from itertools import chain
 from sys import argv
 from pathlib import Path
@@ -71,30 +72,6 @@ def index_words(word_list):
         else:
             group[len(word)] = group.get(len(word), []) + [(list(word), times)]
     return index_dict
-
-
-def find_in_lists(indexed_words, direction_index, lists):
-    """
-    Finds all occurances of sub-lists in given list of lists.
-    Collect them to the times array which attached to the sublist
-    in the given index (for parrall proccessing).
-    """
-    for lst in lists:
-        length = len(lst)
-        for i, char in enumerate(lst):
-            # all words which starts in the current letter.
-            group = indexed_words.get(char)
-            if group is None:
-                continue
-            for word_length, words in group.items():
-                # check if there is enough space to the word
-                if word_length > length - i:
-                    continue
-                for word, times in words:
-                    # find the *first* correct word, if exists.
-                    if word == lst[i : i + word_length]:
-                        times[direction_index] += 1
-                        break
 
 
 def calculate_diagonal_directions(matrix):
@@ -196,6 +173,45 @@ def calculate_directions(matrix, directions):
     return result
 
 
+def find_in_lists(indexed_words, direction_index, lists):
+    """
+    Finds all occurances of sub-lists in given list of lists.
+    Collect them to the times array which attached to the sublist
+    in the given index (for parrall proccessing).
+    """
+    for lst in lists:
+        length = len(lst)
+        for i, char in enumerate(lst):
+            # all words which starts in the current letter.
+            group = indexed_words.get(char)
+            if group is None:
+                continue
+            for word_length, words in group.items():
+                # check if there is enough space to the word
+                if word_length > length - i:
+                    continue
+                current_word = lst[i : i + word_length]
+                for word, times in words:
+                    # find the *first* correct word, if exists.
+                    if word == current_word:
+                        times[direction_index] += 1
+                        break
+
+
+def initialize_find_process(
+    index, slice_length, lines_count, lines, indexed_words, processes_list
+):
+    start = index * slice_length
+    end = min(start + slice_length, lines_count)
+    slice = lines[start:end]
+    args = (
+        indexed_words,
+        index,
+        slice,
+    )
+    processes_list.append(args)
+
+
 def find_words(word_list, matrix, directions):
     """
     Takes as parameter list of words, matrix of characters
@@ -209,20 +225,37 @@ def find_words(word_list, matrix, directions):
     if len(matrix) == 0 or len(matrix[0]) == 0:
         return []
 
-    # for collecting faster the instances, we assign reference types (list)
-    # attached to the words.
-    # and, I mistakenly thought we should write to the file in the order we received...
-    words = [(word, [0]) for word in word_list]
-    # index the words by first character and length
-    indexed = index_words(words)
     # collect the sub-lists we need to check for any direction
     lines = calculate_directions(matrix, directions)
+    lines_count = len(lines)
+    slices_count = min(cpu_count(), (ceil(lines_count / 100)))
 
-    # check the words for every direction
-    find_in_lists(indexed, 0, lines)
+    # for collecting faster the instances in multi-processing without locks,
+    # we assign reference types (list) attached to the words.
+    # and, I mistakenly thought we should write to the file in the order we received...
+    words = [(word, [0] * slices_count) for word in word_list]
+    # index the words by first character and length
+    indexed = index_words(words)
+
+    processes = []
+    slice_length = ceil(lines_count / slices_count)
+    for i in range(slices_count):
+        initialize_find_process(i, slice_length, lines_count, lines, indexed, processes)
+    processes = map(lambda args: lambda: find_in_lists(args[0],args[1],args[2]), processes)
+    processes = map(lambda fn: Process(target = fn), processes)
+
+    for p in processes:
+        p.start()
+    for p in processes:
+        p.join()
 
     # return tuples
-    return [(word, times[0]) for word, times in words if times[0] > 0]
+    result = []
+    for word, times in words:
+        total = sum(times)
+        if total > 0:
+            result.append((word, times))
+    return result
 
 
 def write_output(results, file_name):
@@ -261,7 +294,7 @@ def chek_input():
                 "valid directions are 'r', 'y', 'x', 'l', 'z', 'w', 'u' and 'd' only!"
             )
     if len(issues) > 0:
-        print(*issues, sep = "\n")
+        print(*issues, sep="\n")
         return False
     return True
 
