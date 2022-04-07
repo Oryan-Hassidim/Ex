@@ -4,14 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ca19d2f4-9dd0-461d-a740-129a8d36a9c8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>wordsearch.py</StartupFile>
+    <StartupFile>lab5.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>Ex5</Name>
     <RootNamespace>Ex5</RootNamespace>
-    <TestFramework>unittest</TestFramework>
+    <TestFramework>pytest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
@@ -27,6 +27,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="lab5.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SortedDict.py" />
     <Compile Include="test_wordsearch.py">
       <SubType>Code</SubType>
     </Compile>
