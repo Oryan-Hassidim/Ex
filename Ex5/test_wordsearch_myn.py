@@ -39,6 +39,8 @@ def test_5():
 def test_6():
     directions = ["d", "l", "r", "u", "w", "x", "y", "z", "udlrwxyz"]
     base_path = "C:\\Projects\\Oryan-Hassidim\\Ex\\Ex5\\Additional Files\\"
+    while len(argv) < 5:
+        argv.insert(1, "")
     for d in directions:
         argv[1] = base_path + "word_list.txt"
         argv[2] = base_path + "mat.txt"
