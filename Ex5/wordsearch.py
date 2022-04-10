@@ -11,7 +11,6 @@
 # NOTES: A lot of dictionaries for better performance.
 #############################################################
 
-# from multiprocessing import Pool
 from itertools import chain
 from sys import argv
 from pathlib import Path
@@ -54,24 +53,6 @@ def read_matrix(filename):
     return matrix
 
 
-def index_words(word_list):
-    """
-    Takes as parameter a list of words.
-    Returns a dictionary of the words as lists of characters, indexed by
-    their *first letter* and then their *length*.
-    :param word_list: list of words.
-    :return: dict<first_char, dict<length, char_list> >.
-    """
-    index_dict = {}
-    for word, times in word_list:
-        first = word[0]
-        group = index_dict.get(first)
-        if group is None:
-            index_dict[first] = {len(word): [(list(word), times)]}
-        else:
-            group[len(word)] = group.get(len(word), []) + [(list(word), times)]
-    return index_dict
-
 
 def calculate_diagonal_directions(matrix):
     """
@@ -82,7 +63,8 @@ def calculate_diagonal_directions(matrix):
     e a b c
     f e a b
     """
-    chunk = list(chain(*matrix))
+    #chunk = list(chain(*matrix))
+    chunk = ''.join(matrix)
     height, width = len(matrix), len(matrix[0])
     lst1 = [
         chunk[column : width * min(width - column, height) : width + 1]
@@ -115,7 +97,7 @@ def transpose_matrix(matrix):
     i j k l      c g k
                  d h l
     """
-    return list(map(list, zip(*matrix)))
+    return list(map(''.join, zip(*matrix)))
 
 
 def r_y_x(matrix, r, y, x):
@@ -172,29 +154,21 @@ def calculate_directions(matrix, directions):
     return result
 
 
-def find_in_lists(indexed_words, direction_index, lists):
-    """
-    Finds all occurances of sub-lists in given list of lists.
-    Collect them to the times array which attached to the sublist
-    in the given index (for parrall proccessing).
-    """
-    for lst in lists:
-        length = len(lst)
-        for i, char in enumerate(lst):
-            # all words which starts in the current letter.
-            group = indexed_words.get(char)
-            if group is None:
-                continue
-            for word_length, words in group.items():
-                # check if there is enough space to the word
-                if word_length > length - i:
-                    continue
-                for word, times in words:
-                    # find the *first* correct word, if exists.
-                    if word == lst[i : i + word_length]:
-                        times[direction_index] += 1
-                        break
 
+def find_in_strings(indexed_words, sorted_lengthes, strings):
+    """
+    Finds all occurances of sub-strings in given list of strings.
+    The found counts updated in the indexed_words values.
+    """
+    for current in strings:
+        while current != "":
+            for length in sorted_lengthes:
+                if len(current) < length:
+                    break
+                word = current[:length]
+                if word in indexed_words:
+                    indexed_words[word] += 1
+            current = current[1:]
 
 def find_words(word_list, matrix, directions):
     """
@@ -209,20 +183,12 @@ def find_words(word_list, matrix, directions):
     if len(matrix) == 0 or len(matrix[0]) == 0:
         return []
 
-    # for collecting faster the instances, we assign reference types (list)
-    # attached to the words.
-    # and, I mistakenly thought we should write to the file in the order we received...
-    words = [(word, [0]) for word in word_list]
-    # index the words by first character and length
-    indexed = index_words(words)
-    # collect the sub-lists we need to check for any direction
-    lines = calculate_directions(matrix, directions)
-
-    # check the words for every direction
-    find_in_lists(indexed, 0, lines)
-
-    # return tuples
-    return [(word, times[0]) for word, times in words if times[0] > 0]
+    indexed_words = dict.fromkeys(word_list, 0)
+    lengthes = sorted(list(set(map(len, word_list))))
+    matrix = list(map(lambda l: "".join(l), matrix))
+    strings = calculate_directions(matrix, directions)
+    find_in_strings(indexed_words, lengthes, strings)
+    return [(word, times) for word, times in indexed_words.items() if times > 0]
 
 
 def write_output(results, file_name):
@@ -261,7 +227,7 @@ def chek_input():
                 "valid directions are 'r', 'y', 'x', 'l', 'z', 'w', 'u' and 'd' only!"
             )
     if len(issues) > 0:
-        print(*issues, sep = "\n")
+        print(*issues, sep="\n")
         return False
     return True
 

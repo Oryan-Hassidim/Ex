@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ca19d2f4-9dd0-461d-a740-129a8d36a9c8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>lab5.py</StartupFile>
+    <StartupFile>wordsearch.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -15,7 +15,7 @@
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>"C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\word_list3.txt" "C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\mat3.txt" "C:\users\oryan\desktop\output.txt" udlrwxyz</CommandLineArguments>
+    <CommandLineArguments>"C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\word_list.txt" "C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\mat.txt" "C:\users\oryan\desktop\output.txt" udlrwxyz</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -31,9 +31,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SortedDict.py" />
-    <Compile Include="test_wordsearch.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="test_wordsearch_myn.py" />
     <Compile Include="wordsearch.py">
       <SubType>Code</SubType>
     </Compile>
@@ -42,8 +40,6 @@
     <Folder Include="Additional Files\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Additional Files\mat3.txt" />
-    <Content Include="Additional Files\mat2.txt" />
     <Content Include="Additional Files\mat.txt" />
     <Content Include="Additional Files\outfile_d.txt" />
     <Content Include="Additional Files\outfile_l.txt" />
@@ -54,8 +50,6 @@
     <Content Include="Additional Files\outfile_x.txt" />
     <Content Include="Additional Files\outfile_y.txt" />
     <Content Include="Additional Files\outfile_z.txt" />
-    <Content Include="Additional Files\word_list3.txt" />
-    <Content Include="Additional Files\word_list2.txt" />
     <Content Include="Additional Files\word_list.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
