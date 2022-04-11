@@ -31,7 +31,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SortedDict.py" />
-    <Compile Include="test_wordsearch_myn.py" />
+    <Compile Include="test_wordsearch.py" />
     <Compile Include="wordsearch.py">
       <SubType>Code</SubType>
     </Compile>
