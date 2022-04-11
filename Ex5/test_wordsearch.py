@@ -1,12 +1,7 @@
 import os
 import sys
 
-import wordsearch
 from wordsearch import *
-
-EX_DIR = "Ex5-Examples"
-OUTPUT_FILE = "output.txt"
-
 
 def test_1():
     assert find_words([], [], "") == []
@@ -91,3 +86,16 @@ def test_11():
     )
     assert len(actual) == len(set(actual))
     assert set(expected) == set(actual)
+
+
+def test_12():
+    mat = list(map(list, ["abcd",
+                          "eabc"]))
+    expected = [("aa",1), ("bb",1), ("cc",1), ("d", 1), ("e", 1)]
+    actual = find_words(["aa", "bb", "cc", "dd", "ee", "d", "e"], mat, "y")
+    assert len(actual) == len(set(actual))
+    assert set(expected) == set(actual)
+    actual = find_words(["aa", "bb", "cc", "dd", "ee", "d", "e"], mat, "x")
+    assert len(actual) == len(set(actual))
+    assert set(expected) == set(actual)
+    
