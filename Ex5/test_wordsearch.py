@@ -1,5 +1,6 @@
 import os
 import sys
+from sys import argv
 
 from wordsearch import *
 
@@ -32,21 +33,22 @@ def test_5():
 def test_6():
     directions = ["d", "l", "r", "u", "w", "x", "y", "z", "udlrwxyz"]
     base_path = "C:\\Projects\\Oryan-Hassidim\\Ex\\Ex5\\Additional Files\\"
-    for _ in range(4):
-        argv.insert(1, "")
+    original_argv = sys.argv[:]
+    sys.argv.clear()
+    sys.argv += ["","","","",""]
     for d in directions:
-        argv[1] = base_path + "word_list.txt"
-        argv[2] = base_path + "mat.txt"
-        argv[3] = "C:\\users\\oryan\\desktop\\output.txt"
-        argv[4] = d
+        sys.argv[1] = base_path + "word_list.txt"
+        sys.argv[2] = base_path + "mat.txt"
+        sys.argv[3] = "C:\\users\\oryan\\desktop\\output.txt"
+        sys.argv[4] = d
         main()
         assert os.path.isfile("C:\\users\\oryan\\desktop\\output.txt")
         expected = read_wordlist(f"{base_path}outfile_{d}.txt")
         actual = read_wordlist("C:\\users\\oryan\\desktop\\output.txt")
         assert len(actual) == len(set(actual))
         assert set(expected) == set(actual)
-    for _ in range(4):
-        del(argv[1])
+    sys.argv.clear()
+    sys.argv += original_argv
 
 
 
