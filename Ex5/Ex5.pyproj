@@ -27,6 +27,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="diagonal_yifa.py" />
     <Compile Include="lab5.py">
       <SubType>Code</SubType>
     </Compile>

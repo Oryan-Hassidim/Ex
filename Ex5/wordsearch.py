@@ -11,7 +11,6 @@
 # NOTES: A lot of dictionaries for better performance.
 #############################################################
 
-from itertools import chain
 from sys import argv
 from pathlib import Path
 from os import remove
@@ -63,7 +62,6 @@ def calculate_diagonal_directions(matrix):
     e a b c
     f e a b
     """
-    #chunk = list(chain(*matrix))
     chunk = ''.join(matrix)
     height, width = len(matrix), len(matrix[0])
     lst1 = [
@@ -71,7 +69,7 @@ def calculate_diagonal_directions(matrix):
         for column in range(width)
     ]
     lst2 = [
-        chunk[row * width : row * width + width * min(width, height - row) : width + 1]
+        chunk[row * width : : width + 1]
         for row in range(1, height)
     ]
     return lst1 + lst2
@@ -185,7 +183,7 @@ def find_words(word_list, matrix, directions):
 
     indexed_words = dict.fromkeys(word_list, 0)
     lengthes = sorted(list(set(map(len, word_list))))
-    matrix = list(map(lambda l: "".join(l), matrix))
+    matrix = list(map("".join, matrix))
     strings = calculate_directions(matrix, directions)
     find_in_strings(indexed_words, lengthes, strings)
     return [(word, times) for word, times in indexed_words.items() if times > 0]
@@ -196,11 +194,8 @@ def write_output(results, file_name):
     Writes output line by line to the file in the given path.
     Deletes the file if exists.
     """
-    my_file = Path(file_name)
-    if my_file.is_file():
-        remove(file_name)
 
-    with open(file_name, "a", encoding="ascii") as file:
+    with open(file_name, "w", encoding="ascii") as file:
         for word, times in results:
             file.write(word)
             file.write(",")

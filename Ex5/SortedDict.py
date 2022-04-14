@@ -1,6 +1,9 @@
-class SortedDict(object):
-    _keys = []
-    _values = {}
+from typing import List, Dict, Any
+
+
+class SortedDict:
+    _keys: List[Any] = []
+    _values: Dict[Any, Any] = {}
 
     def set(self, key, value):
         setted = False
@@ -42,24 +45,27 @@ class SortedDict(object):
     def items(self):
         return [(key, self._values[key]) for key in self._keys]
 
-    def __class_getitem__(self, key):
-        return self._values[key]
+    def __class_getitem__(cls, key):
+        return cls._values[key]
 
     def __str__(self):
         result = "{"
-        result += ', '.join(map(lambda x: str(x) + ": " + str(self._values[x]), self._keys))
+        result += ", ".join(
+            map(lambda x: str(x) + ": " + str(self._values[x]), self._keys)
+        )
         result += "}"
         return result
 
+
 s = SortedDict()
 print(s)
-s.add('a', 1)
+s.add("a", 1)
 print(s)
-s.add('c', 3)
+s.add("c", 3)
 print(s)
-s.add('a', 4)
+s.add("a", 4)
 print(s)
-s.add('b', 2)
+s.add("b", 2)
 print(s)
 print(s)
 print(s)

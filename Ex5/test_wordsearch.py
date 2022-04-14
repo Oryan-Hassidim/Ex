@@ -1,8 +1,7 @@
 import os
 import sys
-from sys import argv
 
-from wordsearch import *
+from wordsearch import find_words, main, read_wordlist
 
 def test_1():
     assert find_words([], [], "") == []
@@ -81,7 +80,7 @@ def test_11():
     assert set(expected) == set(actual)
 
 
-def test_11():
+def test_12():
     expected = [("bob", 2), ("cat", 1), ("bobcat", 1)]
     actual = find_words(
         ["bob", "cat", "bobcat"], [["b", "o", "b", "c", "a", "t"]], "lr"
@@ -90,7 +89,7 @@ def test_11():
     assert set(expected) == set(actual)
 
 
-def test_12():
+def test_13():
     mat = list(map(list, ["abcd",
                           "eabc"]))
     expected = [("aa",1), ("bb",1), ("cc",1), ("d", 1), ("e", 1)]
