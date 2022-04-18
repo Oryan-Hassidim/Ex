@@ -130,6 +130,18 @@ def calculate_directions(matrix, directions):
     :param directions: directions string, encoded in "ryxlzwud" pattern.
     :return: list of characters lists.
     """
+
+    # direction calculations:
+    # r = mat
+    # y = diag(mat)
+    # x = flip(diag(mat))
+    # l = flip(mat)
+    # z = diag(flip(mat))
+    # w = flip(diag(flip(mat)))
+    # d = transpose(mat)
+    # u = flip(transpose(mat))
+    
+    
     result = []
     r, y, x, l, z, w, u, d = map(lambda x: x in directions, "ryxlzwud")
 

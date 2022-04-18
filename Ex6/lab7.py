@@ -1,43 +1,51 @@
 
-# def up_and_right(n, k, lst, so_far = ''):
-#    if n == 0 == k and so_far != '':
-#        lst.append(so_far)
-#        return
-#    if n > 0:
-#        up_and_right(n - 1, k, lst, so_far + 'u')
-#    if k > 0:
-#        up_and_right(n, k - 1, lst, so_far + 'r')
-
-#lst = []
-#up_and_right(1, 1, lst)
-#print(*lst, sep='\n', end='\n\n')
-
-# lst.clear()
-#up_and_right(1, 2, lst)
-#print(*lst, sep='\n', end='\n\n')
-
-# lst.clear()
-#up_and_right(2, 1, lst)
-#print(*lst, sep='\n', end='\n\n')
-
-# lst.clear()
-#up_and_right(2, 2, lst)
-#print(*lst, sep='\n', end='\n\n')
-
-# lst.clear()
-#up_and_right(1, 10, lst)
-#print(*lst, sep='\n', end='\n\n')
-
-
 from typing import List
 
 
-def count_sp_ways_core(x, n, so_far=set()):
+def up_and_right(n, k, lst, so_far=''):
+    if n == 0 == k and so_far != '':
+        lst.append(so_far)
+        return
+    if n > 0:
+        up_and_right(n - 1, k, lst, so_far + 'u')
+    if k > 0:
+        up_and_right(n, k - 1, lst, so_far + 'r')
+
+
+lst = []
+up_and_right(1, 1, lst)
+print(*lst, sep='\n', end='\n\n')
+
+lst.clear()
+up_and_right(1, 2, lst)
+print(*lst, sep='\n', end='\n\n')
+
+lst.clear()
+up_and_right(2, 1, lst)
+print(*lst, sep='\n', end='\n\n')
+
+lst.clear()
+up_and_right(2, 2, lst)
+print(*lst, sep='\n', end='\n\n')
+
+lst.clear()
+up_and_right(1, 10, lst)
+print(*lst, sep='\n', end='\n\n')
+
+
+def count_sp_ways_core(x, n, so_far=None):
+    if so_far is None:
+        so_far = set()
+
     if x < 0:
         return 0
     if x == 0:
         return 1
     res = 0
+
+    # for i in range(max(so_far | {0}) + 1, round(x ** (1/n)) + 1):
+    #    if i not in so_far:
+    #        res += count_sp_ways_core(x - i ** n, n, so_far | {i})
 
     def check(i):
         nonlocal res
@@ -47,9 +55,6 @@ def count_sp_ways_core(x, n, so_far=set()):
         check(i - 1)
 
     check(round(x ** (1/n)) + 1)
-    # for i in range(max(so_far | {0}) + 1, round(x ** (1/n)) + 1):
-    #    if i not in so_far:
-    #        res += count_sp_ways_core(x - i ** n, n, so_far | {i})
     return res
 
 
@@ -81,7 +86,7 @@ def reduce_all_options(*lists):
         return []
     res = lists[0]
     for l in lists[1:]:
-        res = all_options(res, l)
+        res = list(all_options(res, l))
     return res
 
 
@@ -112,7 +117,9 @@ def replace(lst, old, new):
     return res
 
 
-def apply_paren(template,  pairs, i=0, res=[]):
+def apply_paren(template,  pairs, i=0, res=None):
+    if res is None:
+        res = []
     if i * 2 == len(template):
         res.append(''.join(template))
         return res
@@ -124,18 +131,21 @@ def apply_paren(template,  pairs, i=0, res=[]):
 print(*find_paren_core(3, 0), sep='\n')
 
 print(apply_paren([0, 0], ["()"]))
-print(apply_paren([0, 0], ["()", "{}", "[]"], res = []))
-print(apply_paren([0, 1, 1, 0], ["()", "{}"], res = []))
+print(apply_paren([0, 0], ["()", "{}", "[]"]))
+print(apply_paren([0, 1, 1, 0], ["()", "{}"]))
+
 
 def all_paren(n, pairs):
     templates = find_paren_core(n, 0)
     res = []
     for template in templates:
-        res.extend(apply_paren(template, pairs, res = []))
+        res.extend(apply_paren(template, pairs,))
     return res
 
 
 res = ['(())', '()()', '(){}', '({})', '{()}', '{{}}', '{}()', '{}{}']
 print(res)
-print(sorted(all_paren(2, ["()","{}"])))
-print(*sorted(all_paren(3, ["()", "{}", "[]"])), sep='\n')
+print(sorted(all_paren(2, ["()", "{}"])), end = "\n\n\n")
+print(*sorted(all_paren(3, ["()", "{}", "[]"])), sep='\n', end = "\n\n\n")
+print(*sorted(all_paren(4, ["()", "{}", "[]"])), sep='\n', end = "\n\n\n")
+print(*sorted(all_paren(6, ["()", "{}", "[]"])), sep='\n', end = "\n\n\n")
