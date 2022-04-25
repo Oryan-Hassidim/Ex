@@ -52,7 +52,6 @@ def read_matrix(filename):
     return matrix
 
 
-
 def calculate_diagonal_directions(matrix):
     """
     Takes a matrix as a parameter ang returns all diagonal from
@@ -62,16 +61,13 @@ def calculate_diagonal_directions(matrix):
     e a b c
     f e a b
     """
-    chunk = ''.join(matrix)
+    chunk = "".join(matrix)
     height, width = len(matrix), len(matrix[0])
     lst1 = [
         chunk[column : width * min(width - column, height) : width + 1]
         for column in range(width)
     ]
-    lst2 = [
-        chunk[row * width : : width + 1]
-        for row in range(1, height)
-    ]
+    lst2 = [chunk[row * width :: width + 1] for row in range(1, height)]
     return lst1 + lst2
 
 
@@ -95,7 +91,7 @@ def transpose_matrix(matrix):
     i j k l      c g k
                  d h l
     """
-    return list(map(''.join, zip(*matrix)))
+    return list(map("".join, zip(*matrix)))
 
 
 def r_y_x(matrix, r, y, x):
@@ -140,8 +136,7 @@ def calculate_directions(matrix, directions):
     # w = flip(diag(flip(mat)))
     # d = transpose(mat)
     # u = flip(transpose(mat))
-    
-    
+
     result = []
     r, y, x, l, z, w, u, d = map(lambda x: x in directions, "ryxlzwud")
 
@@ -164,7 +159,6 @@ def calculate_directions(matrix, directions):
     return result
 
 
-
 def find_in_strings(indexed_words, sorted_lengthes, strings):
     """
     Finds all occurances of sub-strings in given list of strings.
@@ -179,6 +173,7 @@ def find_in_strings(indexed_words, sorted_lengthes, strings):
                 if word in indexed_words:
                     indexed_words[word] += 1
             current = current[1:]
+
 
 def find_words(word_list, matrix, directions):
     """

@@ -1,33 +1,35 @@
-##############################################################################
+#################################################################################
 # FILE: cartoonify.py
 # WRITER: Oryan Hassidim , oryan.hassidim , 319131579
 # EXERCISE: Intro2cs2 ex6 2021-2022
 # DESCRIPTION: A simple program for cartoonifying a given image.
-# NOTES: In many functions I
-##############################################################################
+# NOTES: In many functions I'm using carry functions like functional programming.
+#        For more information: 
+#        https://fsharpforfunandprofit.com/posts/partial-application/
+#################################################################################
 
 from ex6_helper import *
 from typing import Optional
 from math import floor, ceil
 from sys import argv
+  
 
-
-def map2D(f, l=None):  # enable carryng the function
+def map_2D(func, lst=None):  # enable carryng the function
     """
     map for 2D lists.
     """
 
     def inner(l):
-        return list(map(lambda x: list(map(f, x)), l))
+        return list(map(lambda x: list(map(func, x)), l))
 
-    return inner(l) if l != None else inner
+    return inner(lst) if lst is not None else inner
 
 
-def sum2D(l):
+def sum_2D(lst):
     """
     sum for 2D list.
     """
-    return sum(map(sum, l))
+    return sum(map(sum, lst))
 
 
 def separate_channels(image: ColoredImage) -> List[List[List[int]]]:
@@ -37,7 +39,7 @@ def separate_channels(image: ColoredImage) -> List[List[List[int]]]:
     if len(image) == 0 or len(image[0]) == 0:
         return image
     depth = len(image[0][0])
-    channels = [map2D(lambda pix: pix[channel], image) for channel in range(depth)]
+    channels = [map_2D(lambda pix: pix[channel], image) for channel in range(depth)]
     return channels
 
 
@@ -48,7 +50,7 @@ def combine_channels(channels: List[List[List[int]]]) -> ColoredImage:
     if len(channels) == 0 or len(channels[0]) == 0 or len(channels[0][0]) == 0:
         return channels
     depth = len(channels)
-    res = map2D(lambda x: [x], channels[0])
+    res = map_2D(lambda x: [x], channels[0])
     for channel in range(1, depth):
         for row in range(len(channels[channel])):
             for col in range(len(channels[channel][row])):
@@ -67,7 +69,7 @@ def RGB2grayscale(colored_image: ColoredImage) -> SingleChannelImage:
     """
     Converts colored image of RGB channels to grayscle image.
     """
-    res = map2D(RGB2grayscale_pixel, colored_image)
+    res = map_2D(RGB2grayscale_pixel, colored_image)
     return res
 
 
@@ -80,6 +82,10 @@ def blur_kernel(size: int) -> Kernel:
 
 
 def get_value_or_default(image: SingleChannelImage):
+    """
+    Takes an image and returns function to get value of
+    specific index or default value.
+    """
     height = len(image)
     width = len(image[0])
 
@@ -94,6 +100,9 @@ def get_value_or_default(image: SingleChannelImage):
 
 
 def apply_kernel_core(image: SingleChannelImage, kernel: Kernel):
+    """
+    Creates helper function for applying kernel.
+    """
     get_val = get_value_or_default(image)
     size = len(kernel)
     size -= 1
@@ -160,7 +169,9 @@ def resize(
         [(i * height_prop, j * width_prop) for j in range(new_width)]
         for i in range(new_height)
     ]
-    new_image = map2D(lambda yx: bilinear_interpolation(image, yx[0], yx[1]), new_image)
+    new_image = map_2D(
+        lambda yx: bilinear_interpolation(image, yx[0], yx[1]), new_image
+    )
 
     new_image[0][0] = image[0][0]
     new_image[0][-1] = image[0][-1]
@@ -196,6 +207,9 @@ def scale_down_colored_image(
 
 
 def rotate_90(image: Image, direction: str) -> Image:
+    """
+    Rotates the given image with given direction ('R' or 'L').
+    """
     im = image if direction == "L" else image[::-1]
     transposed = list(map(list, zip(*im)))
     return transposed[::-1] if direction == "L" else transposed
@@ -204,9 +218,12 @@ def rotate_90(image: Image, direction: str) -> Image:
 def get_edges(
     image: SingleChannelImage, blur_size: int, block_size: int, c: int
 ) -> SingleChannelImage:
+    """
+    Takes an image and returns new images of the edges in the image.
+    """
     blurred = apply_kernel(image, blur_kernel(blur_size))
     avgs = apply_kernel(blurred, blur_kernel(block_size))
-    threshhold = map2D(lambda pix: pix - c, avgs)
+    threshhold = map_2D(lambda pix: pix - c, avgs)
     for i in range(len(image)):
         for j in range(len(image[i])):
             if blurred[i][j] > threshhold[i][j]:
@@ -217,10 +234,16 @@ def get_edges(
 
 
 def quantize(image: SingleChannelImage, N: int) -> SingleChannelImage:
-    return map2D(lambda pix: round(floor(pix * N / 256) * 255 / (N - 1)), image)
+    """
+    Takes an momochrome image and returns a new image with quantized colors.
+    """
+    return map_2D(lambda pix: round(floor(pix * N / 256) * 255 / (N - 1)), image)
 
 
 def quantize_colored_image(image: ColoredImage, N: int) -> ColoredImage:
+    """
+    Takes a colored image and returns a new image with quantized colors.
+    """
     channels = separate_channels(image)
     channels = [quantize(channel, N) for channel in channels]
     return combine_channels(channels)
@@ -230,6 +253,9 @@ def quantize_colored_image(image: ColoredImage, N: int) -> ColoredImage:
 def add_mask_core(
     image1: SingleChannelImage, image2: SingleChannelImage, mask: List[List[float]]
 ) -> Image:
+    """
+    Takes two momochromatic images and a mask and returns a new image with the mask applied.
+    """
     res = []
     for i in range(len(image1)):
         new_row = []
@@ -242,24 +268,31 @@ def add_mask_core(
 
 
 def is_colored_image(image: Image):
+    """
+    Returns True if the given image is a colored image.
+    Else, returns False.
+    """
     return isinstance(image[0][0], int)
 
 
 def add_mask(image1: Image, image2: Image, mask: List[List[float]]) -> Image:
+    """
+    Takes two images - whether colored or not - and a mask, and returns a new image with the mask applied.
+    """
     singles = is_colored_image(image1), is_colored_image(image2)
     if singles == (True, True):
         return add_mask_core(image1, image2, mask)
-    
+
     if singles == (False, True):
         channels = separate_channels(image1)
         channels = [add_mask_core(c, image2, mask) for c in channels]
         return combine_channels(channels)
-    
+
     if singles == (True, False):
         channels = separate_channels(image2)
         channels = [add_mask_core(image1, c, mask) for c in channels]
         return combine_channels(channels)
-    
+
     channels1, channels2 = separate_channels(image1), separate_channels(image2)
     channels = []
     for i in range(len(channels1)):
@@ -274,15 +307,21 @@ def cartoonify(
     th_c: int,
     quant_num_shades: int,
 ) -> ColoredImage:
+    """
+    Takes a colored image and returns a new image with cartoon-like effect.
+    """
     gray = RGB2grayscale(image)
     edges = get_edges(gray, blur_size, th_block_size, th_c)
     quantized = quantize_colored_image(image, quant_num_shades)
-    mask = map2D(lambda pix: pix / 255, edges)
+    mask = map_2D(lambda pix: pix / 255, edges)
     cartoonified = add_mask(quantized, edges, mask)
     return cartoonified
 
 
 def main(args):
+    """
+    Main function.
+    """
     if len(args) != 7:
         print(
             "Sorry, we can't apply this operation. "
@@ -301,9 +340,6 @@ def main(args):
 
     save_image(cartoonified, cartoon_dest)
 
-from time import process_time_ns
 
 if __name__ == "__main__":
-    start = process_time_ns()
     main(argv[1:])
-    print((process_time_ns() - start) / 100000)

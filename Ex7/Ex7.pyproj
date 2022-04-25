@@ -2,21 +2,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>fb50d324-76d7-446b-8924-7f42f095c4b7</ProjectGuid>
+    <ProjectGuid>582c1877-86e7-409a-8663-5001b7a82b64</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>cartoonify.py</StartupFile>
-    <SearchPath>..\Ex6</SearchPath>
+    <StartupFile>ex7.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>Ex6</Name>
-    <RootNamespace>Ex6</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <Name>Ex7</Name>
+    <RootNamespace>Ex7</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <InterpreterId>Global|VisualStudio|python-3.7.3.amd64</InterpreterId>
     <TestFramework>pytest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
-    <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>.\girl.png car.png 100 5 3 5 10</CommandLineArguments>
-    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,30 +26,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="cartoonify_multi_process.py" />
-    <Compile Include="cartoonify.py" />
-    <Compile Include="ex6_helper.py" />
-    <Compile Include="lab7.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test_cartoonify.py">
+    <Compile Include="ex7.py" />
+    <Compile Include="ex7_helper.py" />
+    <Compile Include="hanoi_game.py" />
+    <Compile Include="test_ex7.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="examples.zip" />
-    <Content Include="girl.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Interpreter Include="env\">
-      <Id>env</Id>
-      <Version>0.0</Version>
-      <Description>env (Python 3.10)</Description>
-      <InterpreterPath>Scripts\python.exe</InterpreterPath>
-      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
-      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
-      <Architecture>X64</Architecture>
-    </Interpreter>
+    <InterpreterReference Include="Global|PythonCore|3.10" />
+    <InterpreterReference Include="Global|VisualStudio|python-3.7.3.amd64" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
