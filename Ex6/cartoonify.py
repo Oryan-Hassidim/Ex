@@ -226,10 +226,10 @@ def get_edges(
     threshhold = map_2D(lambda pix: pix - c, avgs)
     for i in range(len(image)):
         for j in range(len(image[i])):
-            if blurred[i][j] > threshhold[i][j]:
-                avgs[i][j] = 255
-            else:
+            if blurred[i][j] < threshhold[i][j]:
                 avgs[i][j] = 0
+            else:
+                avgs[i][j] = 255
     return avgs
 
 

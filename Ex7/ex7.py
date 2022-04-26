@@ -2,7 +2,7 @@
 # FILE: ex7.py
 # WRITER: Oryan Hassidim , oryan.hassidim , 319131579
 # EXERCISE: Intro2cs2 ex7 2021-2022
-# DESCRIPTION: Simple function which use recorsian.
+# DESCRIPTION: Simple function which use recursion.
 # NOTES:
 #################################################################################
 
@@ -111,12 +111,10 @@ def play_hanoi(Hanoi: Any, n: int, src: Any, dst: Any, temp: Any) -> None:
     # In the ex7.pdf from the site, there is a link to:
     # https://he.wikipedia.org/wiki/%D7%9E%D7%92%D7%93%D7%9C%D7%99_%D7%94%D7%90%D7%A0%D7%95%D7%99
     # which explains the game and give a full code in python...
-    # I almost copied the algorithem, and I didn't copy the code.
-    # I just added the code for n = 0 case.
+    # I almost copied the algorithm, and I didn't copy the code.
+    # I updated the algorithm to adapt to the requirements.
     if n == 0:
         return
-    if n == 1:
-        Hanoi.move(src, dst)
     else:
         play_hanoi(Hanoi, n - 1, src, temp, dst)
         Hanoi.move(src, dst)
@@ -210,11 +208,12 @@ def magic_list(n: int, so_far : List[Any] = [None]) -> List[Any]:
     :param n: an integer
     :return: a list of n lists
     """
+    # initialize the recursion
     if len(so_far) == 1 and so_far[0] == None:
         so_far = []
-    # if n == 0:
-    #    return so_far
+    # stopping condition
     if len(so_far) == n:
         return so_far
+    
     so_far.append(magic_list(len(so_far)))
     return magic_list(n, so_far)
