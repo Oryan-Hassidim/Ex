@@ -27,18 +27,19 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="diagonal_yifa.py" />
     <Compile Include="lab5.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SortedDict.py" />
     <Compile Include="test_wordsearch.py" />
+    <Compile Include="test_wordsearch_W.py" />
     <Compile Include="wordsearch.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Additional Files\" />
+    <Folder Include="Ex5-Examples\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Additional Files\mat.txt" />
@@ -52,6 +53,56 @@
     <Content Include="Additional Files\outfile_y.txt" />
     <Content Include="Additional Files\outfile_z.txt" />
     <Content Include="Additional Files\word_list.txt" />
+    <Content Include="Ex5-Examples\matrix.txt" />
+    <Content Include="Ex5-Examples\matrix0.txt" />
+    <Content Include="Ex5-Examples\matrixC.txt" />
+    <Content Include="Ex5-Examples\matrixR.txt" />
+    <Content Include="Ex5-Examples\matrixZ.txt" />
+    <Content Include="Ex5-Examples\out0_d.txt" />
+    <Content Include="Ex5-Examples\out0_l.txt" />
+    <Content Include="Ex5-Examples\out0_r.txt" />
+    <Content Include="Ex5-Examples\out0_u.txt" />
+    <Content Include="Ex5-Examples\out0_w.txt" />
+    <Content Include="Ex5-Examples\out0_x.txt" />
+    <Content Include="Ex5-Examples\out0_y.txt" />
+    <Content Include="Ex5-Examples\out0_z.txt" />
+    <Content Include="Ex5-Examples\outC_d.txt" />
+    <Content Include="Ex5-Examples\outC_l.txt" />
+    <Content Include="Ex5-Examples\outC_r.txt" />
+    <Content Include="Ex5-Examples\outC_u.txt" />
+    <Content Include="Ex5-Examples\outC_w.txt" />
+    <Content Include="Ex5-Examples\outC_x.txt" />
+    <Content Include="Ex5-Examples\outC_y.txt" />
+    <Content Include="Ex5-Examples\outC_z.txt" />
+    <Content Include="Ex5-Examples\outR_d.txt" />
+    <Content Include="Ex5-Examples\outR_l.txt" />
+    <Content Include="Ex5-Examples\outR_r.txt" />
+    <Content Include="Ex5-Examples\outR_u.txt" />
+    <Content Include="Ex5-Examples\outR_w.txt" />
+    <Content Include="Ex5-Examples\outR_x.txt" />
+    <Content Include="Ex5-Examples\outR_y.txt" />
+    <Content Include="Ex5-Examples\outR_z.txt" />
+    <Content Include="Ex5-Examples\outZ_d.txt" />
+    <Content Include="Ex5-Examples\outZ_l.txt" />
+    <Content Include="Ex5-Examples\outZ_r.txt" />
+    <Content Include="Ex5-Examples\outZ_u.txt" />
+    <Content Include="Ex5-Examples\outZ_w.txt" />
+    <Content Include="Ex5-Examples\outZ_x.txt" />
+    <Content Include="Ex5-Examples\outZ_y.txt" />
+    <Content Include="Ex5-Examples\outZ_z.txt" />
+    <Content Include="Ex5-Examples\out_d.txt" />
+    <Content Include="Ex5-Examples\out_l.txt" />
+    <Content Include="Ex5-Examples\out_r.txt" />
+    <Content Include="Ex5-Examples\out_u.txt" />
+    <Content Include="Ex5-Examples\out_w.txt" />
+    <Content Include="Ex5-Examples\out_x.txt" />
+    <Content Include="Ex5-Examples\out_y.txt" />
+    <Content Include="Ex5-Examples\out_z.txt" />
+    <Content Include="Ex5-Examples\words.txt" />
+    <Content Include="Ex5-Examples\words0.txt" />
+    <Content Include="Ex5-Examples\wordsC.txt" />
+    <Content Include="Ex5-Examples\wordsR.txt" />
+    <Content Include="Ex5-Examples\wordsZ.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

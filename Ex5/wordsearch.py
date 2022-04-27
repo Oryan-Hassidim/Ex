@@ -64,10 +64,11 @@ def calculate_diagonal_directions(matrix):
     chunk = "".join(matrix)
     height, width = len(matrix), len(matrix[0])
     lst1 = [
-        chunk[column : width * min(width - column, height) : width + 1]
+        chunk[column: width * min(width - column, height): width + 1]
         for column in range(width)
     ]
-    lst2 = [chunk[row * width :: width + 1] for row in range(1, height)]
+    lst2 = [chunk[row * width:min(row * width + width * width, len(chunk)):width + 1]
+            for row in range(1, height)]
     return lst1 + lst2
 
 
@@ -220,7 +221,8 @@ def chek_input():
     else:
         my_file = Path(argv[1])
         if not my_file.is_file():
-            issues.append("the word_list file doesn't exists in the given path!")
+            issues.append(
+                "the word_list file doesn't exists in the given path!")
         my_file = Path(argv[2])
         if not my_file.is_file():
             issues.append("the matrix file doesn't exists in the given path!")

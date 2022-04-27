@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>582c1877-86e7-409a-8663-5001b7a82b64</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>ex7.py</StartupFile>
+    <StartupFile>test_ex7.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

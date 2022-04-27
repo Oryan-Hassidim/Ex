@@ -82,7 +82,7 @@ def is_power(b: int, x: int, so_far: int = -1) -> bool:
     return is_power(b, x, int(log_mult(so_far, b)))
 
 
-def reverse(s: str, i : int = 0) -> str:
+def reverse(s: str, i: int = 0) -> str:
     """
     Takes a string as parameter and returns its reverse.
     :param s: a string
@@ -144,7 +144,7 @@ def number_of_ones(n: int) -> int:
     return number_of_ones_core(n) + number_of_ones(n - 1)
 
 
-def compare_lists_rec(l1: List[int], l2: List[int], i : int = 0) -> bool:
+def compare_lists_rec(l1: List[int], l2: List[int], i: int = 0) -> bool:
     """
     Takes two lists of integers of same length as parameters
     and returns True if they are equal, and False otherwise.
@@ -168,12 +168,14 @@ def compare_lists(l1: List[int], l2: List[int]) -> bool:
     :param l2: a list
     :return: True if l1 and l2 are equal, False otherwise
     """
+    if l1 is l2:
+        return True
     if len(l1) != len(l2):
         return False
     return compare_lists_rec(l1, l2)
 
 
-def compare_2d_lists_rec(l1: List[List[int]], l2: List[List[int]], i : int = 0) -> bool:
+def compare_2d_lists_rec(l1: List[List[int]], l2: List[List[int]], i: int = 0) -> bool:
     """
     Takes two 2D lists of integers of same length as parameters
     and returns True if they are equal, and False otherwise.
@@ -197,12 +199,14 @@ def compare_2d_lists(l1: List[List[int]], l2: List[List[int]]) -> bool:
     :param l2: a 2D list
     :return: True if l1 and l2 are equal, False otherwise
     """
+    if l1 is l2:
+        return True
     if len(l1) != len(l2):
         return False
     return compare_2d_lists_rec(l1, l2)
 
 
-def magic_list(n: int, so_far : List[Any] = [None]) -> List[Any]:
+def magic_list(n: int, so_far: List[Any] = [None]) -> List[Any]:
     """
     Takes an integer as parameter and returns the n'th of magic list.
     :param n: an integer
@@ -214,6 +218,12 @@ def magic_list(n: int, so_far : List[Any] = [None]) -> List[Any]:
     # stopping condition
     if len(so_far) == n:
         return so_far
-    
+
     so_far.append(magic_list(len(so_far)))
     return magic_list(n, so_far)
+
+    # shorter option:
+    # if n == 0: return []
+    # res = magic_list(n-1)
+    # res.append(magic_list(n-1))
+    # return res

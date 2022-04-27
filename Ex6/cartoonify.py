@@ -14,7 +14,7 @@ from math import floor, ceil
 from sys import argv
   
 
-def map_2D(func, lst=None):  # enable carryng the function
+def map_2D(func, lst=None):  # enable carrying the function
     """
     map for 2D lists.
     """
@@ -34,7 +34,7 @@ def sum_2D(lst):
 
 def separate_channels(image: ColoredImage) -> List[List[List[int]]]:
     """
-    Seperates the given colored image to channels.
+    Separates the given colored image to channels.
     """
     if len(image) == 0 or len(image[0]) == 0:
         return image
@@ -75,7 +75,7 @@ def RGB2grayscale(colored_image: ColoredImage) -> SingleChannelImage:
 
 def blur_kernel(size: int) -> Kernel:
     """
-    Takes size as parameter and returns Kernel of the given sizes squered,
+    Takes size as parameter and returns Kernel of the given sizes squared,
     with equal weight for each cell.
     """
     return [[1 / (size * size)] * size] * size
@@ -143,7 +143,7 @@ def apply_kernel(image: SingleChannelImage, kernel: Kernel) -> SingleChannelImag
 def bilinear_interpolation(image: SingleChannelImage, y: float, x: float) -> int:
     """
     Takes an image and x and y coordinates and returns the color scale of this point
-    relativly to the image.
+    relatively to the image.
     """
     dx = x % 1
     dy = y % 1
@@ -160,11 +160,19 @@ def resize(
     image: SingleChannelImage, new_height: int, new_width: int
 ) -> SingleChannelImage:
     """
-    Takes an image and destinition height and width,
+    Takes an image and destination height and width,
     and returns a new image with the new size.
     """
-    height_prop = (len(image) - 1) / (new_height - 1)
-    width_prop = (len(image[0]) - 1) / (new_width - 1)
+    assert (new_height == 1) == (len(image) == 1)
+    assert (new_width == 1) == (len(image[0]) == 1)
+    if new_height == 1:
+        height_prop = 1
+    else:
+        height_prop = (len(image) - 1) / (new_height - 1)
+    if new_width == 1:
+        width_prop = 1
+    else:
+        width_prop = (len(image[0]) - 1) / (new_width - 1)
     new_image = [
         [(i * height_prop, j * width_prop) for j in range(new_width)]
         for i in range(new_height)
@@ -185,7 +193,7 @@ def scale_down_colored_image(
     image: ColoredImage, max_size: int
 ) -> Optional[ColoredImage]:
     """
-    Scales tge given image to to max-size.
+    Scales the given image to max-size.
     If the given image is smaller than max-size, returns None.
     Else, returns the scaled image.
     """
@@ -235,7 +243,7 @@ def get_edges(
 
 def quantize(image: SingleChannelImage, N: int) -> SingleChannelImage:
     """
-    Takes an momochrome image and returns a new image with quantized colors.
+    Takes an monochrome image and returns a new image with quantized colors.
     """
     return map_2D(lambda pix: round(floor(pix * N / 256) * 255 / (N - 1)), image)
 
@@ -254,7 +262,7 @@ def add_mask_core(
     image1: SingleChannelImage, image2: SingleChannelImage, mask: List[List[float]]
 ) -> Image:
     """
-    Takes two momochromatic images and a mask and returns a new image with the mask applied.
+    Takes two monochromatic images and a mask and returns a new image with the mask applied.
     """
     res = []
     for i in range(len(image1)):
