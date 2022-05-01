@@ -492,3 +492,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Ex zip
+ex*.zip

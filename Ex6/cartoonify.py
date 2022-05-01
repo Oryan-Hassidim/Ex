@@ -4,7 +4,7 @@
 # EXERCISE: Intro2cs2 ex6 2021-2022
 # DESCRIPTION: A simple program for cartoonifying a given image.
 # NOTES: In many functions I'm using carry functions like functional programming.
-#        For more information: 
+#        For more information:
 #        https://fsharpforfunandprofit.com/posts/partial-application/
 #################################################################################
 
@@ -12,7 +12,7 @@ from ex6_helper import *
 from typing import Optional
 from math import floor, ceil
 from sys import argv
-  
+
 
 def map_2D(func, lst=None):  # enable carrying the function
     """
@@ -39,7 +39,9 @@ def separate_channels(image: ColoredImage) -> List[List[List[int]]]:
     if len(image) == 0 or len(image[0]) == 0:
         return image
     depth = len(image[0][0])
-    channels = [map_2D(lambda pix: pix[channel], image) for channel in range(depth)]
+    # 3*n = n*3, and it's more readable.
+    channels = [map_2D(lambda pix: pix[channel], image)
+                for channel in range(depth)]
     return channels
 
 
@@ -99,7 +101,7 @@ def get_value_or_default(image: SingleChannelImage):
     return inner
 
 
-def apply_kernel_core(image: SingleChannelImage, kernel: Kernel):
+def apply_kernel_core(image: SingleChannelImage, kernel: Kernel, round_value = True):
     """
     Creates helper function for applying kernel.
     """
@@ -120,17 +122,18 @@ def apply_kernel_core(image: SingleChannelImage, kernel: Kernel):
         for di, dj, pix in kerneler:
             val = get_val(row + di, col + dj, default)
             my_sum += pix * val
-        return max(0, min(255, round(my_sum)))
+        
+        return max(0, min(255, round(my_sum))) if round_value else my_sum
 
     return inner
 
 
-def apply_kernel(image: SingleChannelImage, kernel: Kernel) -> SingleChannelImage:
+def apply_kernel(image: SingleChannelImage, kernel: Kernel,  round_value = True) -> SingleChannelImage:
     """
     Applies the given kernel for the given image.
     Edges takes the value of *calculated cell*.
     """
-    core = apply_kernel_core(image, kernel)
+    core = apply_kernel_core(image, kernel, round_value)
     res = []
     for row in range(len(image)):
         new_row = []
@@ -163,16 +166,8 @@ def resize(
     Takes an image and destination height and width,
     and returns a new image with the new size.
     """
-    assert (new_height == 1) == (len(image) == 1)
-    assert (new_width == 1) == (len(image[0]) == 1)
-    if new_height == 1:
-        height_prop = 1
-    else:
-        height_prop = (len(image) - 1) / (new_height - 1)
-    if new_width == 1:
-        width_prop = 1
-    else:
-        width_prop = (len(image[0]) - 1) / (new_width - 1)
+    height_prop = (len(image) - 1) / (new_height - 1)
+    width_prop = (len(image[0]) - 1) / (new_width - 1)
     new_image = [
         [(i * height_prop, j * width_prop) for j in range(new_width)]
         for i in range(new_height)
@@ -230,7 +225,7 @@ def get_edges(
     Takes an image and returns new images of the edges in the image.
     """
     blurred = apply_kernel(image, blur_kernel(blur_size))
-    avgs = apply_kernel(blurred, blur_kernel(block_size))
+    avgs = apply_kernel(blurred, blur_kernel(block_size), False)
     threshhold = map_2D(lambda pix: pix - c, avgs)
     for i in range(len(image)):
         for j in range(len(image[i])):
@@ -258,24 +253,7 @@ def quantize_colored_image(image: ColoredImage, N: int) -> ColoredImage:
     # where are F# pipes???
 
 
-def add_mask_core(
-    image1: SingleChannelImage, image2: SingleChannelImage, mask: List[List[float]]
-) -> Image:
-    """
-    Takes two monochromatic images and a mask and returns a new image with the mask applied.
-    """
-    res = []
-    for i in range(len(image1)):
-        new_row = []
-        for j in range(len(image1[0])):
-            new_row.append(
-                round(image1[i][j] * mask[i][j] + image2[i][j] * (1 - mask[i][j]))
-            )
-        res.append(new_row)
-    return res
-
-
-def is_colored_image(image: Image):
+def is_mono_image(image: Image):
     """
     Returns True if the given image is a colored image.
     Else, returns False.
@@ -287,24 +265,22 @@ def add_mask(image1: Image, image2: Image, mask: List[List[float]]) -> Image:
     """
     Takes two images - whether colored or not - and a mask, and returns a new image with the mask applied.
     """
-    singles = is_colored_image(image1), is_colored_image(image2)
-    if singles == (True, True):
-        return add_mask_core(image1, image2, mask)
-
-    if singles == (False, True):
-        channels = separate_channels(image1)
-        channels = [add_mask_core(c, image2, mask) for c in channels]
-        return combine_channels(channels)
-
-    if singles == (True, False):
-        channels = separate_channels(image2)
-        channels = [add_mask_core(image1, c, mask) for c in channels]
-        return combine_channels(channels)
+    if is_mono_image(image1):
+        res = []
+        for i in range(len(image1)):
+            new_row = []
+            for j in range(len(image1[0])):
+                new_row.append(
+                    round(image1[i][j] * mask[i][j] +
+                          image2[i][j] * (1 - mask[i][j]))
+                )
+            res.append(new_row)
+        return res
 
     channels1, channels2 = separate_channels(image1), separate_channels(image2)
-    channels = []
-    for i in range(len(channels1)):
-        channels.append(add_mask_core(channels1[i], channels2[i], mask))
+    channels = [add_mask(c1, c2, mask)
+                for c1, c2 in zip(channels1, channels2)]
+
     return combine_channels(channels)
 
 
@@ -322,8 +298,9 @@ def cartoonify(
     edges = get_edges(gray, blur_size, th_block_size, th_c)
     quantized = quantize_colored_image(image, quant_num_shades)
     mask = map_2D(lambda pix: pix / 255, edges)
-    cartoonified = add_mask(quantized, edges, mask)
-    return cartoonified
+    channels = separate_channels(quantized)
+    channels = [add_mask(c, edges, mask) for c in channels]
+    return combine_channels(channels)
 
 
 def main(args):
@@ -333,7 +310,9 @@ def main(args):
     if len(args) != 7:
         print(
             "Sorry, we can't apply this operation. "
-            + "This application takes 7 arguments:)"
+            + "This application takes 7 arguments:\n"
+            + "python3 cartoonify.py <image_source> <cartoon_dest> <max_im_size> "
+            + "<blur_size> <th_block_size> <th_c> <quant_num_shades>"
         )
         return
     im_source, cartoon_dest = args[:2]
@@ -344,7 +323,8 @@ def main(args):
     scaled = scale_down_colored_image(im, max_size)
     scaled = im if scaled is None else scaled
 
-    cartoonified = cartoonify(scaled, blur_size, block_size, th_c, quant_shades)
+    cartoonified = cartoonify(
+        scaled, blur_size, block_size, th_c, quant_shades)
 
     save_image(cartoonified, cartoon_dest)
 

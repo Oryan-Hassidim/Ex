@@ -7,12 +7,14 @@ from cartoonify import (
     apply_kernel,
     bilinear_interpolation,
     resize,
+    scale_down_colored_image,
     rotate_90,
     get_edges,
     quantize,
     add_mask,
     cartoonify
 )
+from random import randint
 
 
 def test_separate_channels():
@@ -43,6 +45,7 @@ def test_blur_kernel():
         [1 / 9, 1 / 9, 1 / 9],
         [1 / 9, 1 / 9, 1 / 9],
     ]
+    assert blur_kernel(7) == [[1/49]*7]*7
 
 
 def test_apply_kernel():
@@ -78,6 +81,28 @@ def test_resize():
                   2, 2) == [[0, 10], [10, 0]]
 
 
+def test_scale_down_colored_image():
+    assert scale_down_colored_image(
+        [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]], 2) == None
+    assert scale_down_colored_image([[[1, 2, 3], [4, 5, 6]]], 2) == None
+    assert scale_down_colored_image([[[1, 2, 3]], [[7, 8, 9]]], 2) == None
+    pix = [0] * 3
+    row = [pix] * 6
+    im = [row] * 6
+    assert scale_down_colored_image(im, 2) == [[pix] * 2] * 2
+    im = [row] * 9
+    assert scale_down_colored_image(im, 3) == [[pix] * 2] * 3
+    test_resize()
+    test_separate_channels()
+    test_combine_channels()
+    r = range
+    im = [[[randint(0, 256) for _ in 'RGB'] for _ in r(30)] for _ in r(60)]
+    channels = separate_channels(im)
+    expected = [resize(c, 10, 5) for c in channels]
+    expected = combine_channels(expected)
+    assert scale_down_colored_image(im, 10) == expected
+
+
 def test_rotate_90():
     assert rotate_90([[1, 2, 3], [4, 5, 6]], 'R') == [[4, 1], [5, 2], [6, 3]]
     assert rotate_90([[1, 2, 3], [4, 5, 6]], 'L') == [[3, 6], [2, 5], [1, 4]]
@@ -95,11 +120,38 @@ def test_quantize():
 
 
 def test_add_mask():
-    assert add_mask([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]], [[[250, 250, 250], [0, 0, 0]], [
-                    [250, 250, 100], [1, 11, 13]]],  [[0, 0.5, 1]]*2) == [[[250, 250, 250], [2, 2, 3]], [[250, 250, 100], [6, 11, 12]]]
+    from cartoonify import add_mask
+    assert add_mask([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]],
+                    [[[250, 250, 250], [0, 0, 0]], [[250, 250, 100], [1, 11, 13]]],
+                    [[0, 0.5, 1]]*2) == [[[250, 250, 250], [2, 2, 3]], [[250, 250, 100], [6, 11, 12]]]
     assert add_mask([[50, 50, 50]], [[200, 200, 200]],
                     [[0, 0.5, 1]]) == [[200, 125, 50]]
 
 
 def test_cartoonify():
-    assert cartoonify([[[50, 150, 250]]], 3, 3, 20, 8) == [[[36, 146, 255]]]
+    import cartoonify
+    assert cartoonify.cartoonify([[[50, 150, 250]]], 3, 3, 20, 8) == [
+        [[36, 146, 255]]]
+    assert cartoonify.cartoonify([[[0]*3]], 3, 3, 3, 2) == [[[0, 0, 0]]]
+
+    def add_mask(image1, image2, mask):
+        if isinstance(image1[0][0], int):
+            res = []
+            for i in range(len(image1)):
+                new_row = []
+                for j in range(len(image1[0])):
+                    new_row.append(
+                        round(image1[i][j] * mask[i][j] +
+                              image2[i][j] * (1 - mask[i][j]))
+                    )
+                res.append(new_row)
+            return res
+
+        channels1, channels2 = separate_channels(
+            image1), separate_channels(image2)
+        channels = [add_mask(c1, c2, mask)
+                    for c1, c2 in zip(channels1, channels2)]
+
+        return combine_channels(channels)
+    cartoonify.add_mask = add_mask
+    assert cartoonify.cartoonify([[[0]*3]], 3, 3, 3, 2) == [[[0, 0, 0]]]

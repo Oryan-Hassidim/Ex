@@ -1,4 +1,5 @@
 
+from types import FrameType
 from typing import List
 
 
@@ -10,6 +11,7 @@ def up_and_right(n, k, lst, so_far=''):
         up_and_right(n - 1, k, lst, so_far + 'u')
     if k > 0:
         up_and_right(n, k - 1, lst, so_far + 'r')
+
 
 
 lst = []
@@ -149,3 +151,11 @@ print(sorted(all_paren(2, ["()", "{}"])), end = "\n\n\n")
 print(*sorted(all_paren(3, ["()", "{}", "[]"])), sep='\n', end = "\n\n\n")
 print(*sorted(all_paren(4, ["()", "{}", "[]"])), sep='\n', end = "\n\n\n")
 print(*sorted(all_paren(6, ["()", "{}", "[]"])), sep='\n', end = "\n\n\n")
+
+
+def frac(n):
+    if n == 0:
+        return 1
+    return n * frac(n - 1)
+
+print(frac(10))

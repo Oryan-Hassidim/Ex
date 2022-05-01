@@ -16,6 +16,9 @@
     <TestFramework>pytest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>ziggy.png cartoon.png 500 3 5 3 5</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,7 +32,6 @@
     <InterpreterReference Include="Global|VisualStudio|python-3.7.3.amd64" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="car.png" />
     <Content Include="examples.zip" />
     <Content Include="girl.png" />
     <Content Include="ziggy.png" />

@@ -1,7 +1,14 @@
+###############################################
+# updated by Oryan Hassidim
+# Oryan.Hassidim@mail.huji.ac.il
+# last updated 28/04/2022  20:20
+###############################################
+
 import os
 import sys
 import tempfile
 import inspect
+from time import perf_counter
 
 import wordsearch
 from wordsearch import *
@@ -9,14 +16,7 @@ from wordsearch import *
 EX_DIR = 'Ex5-Examples'
 OUTPUT_FILE = 'output.txt'
 
-
-def get_python_path():
-    for path in sys.path:
-        if os.path.isfile(os.path.join(path, 'python.exe')):
-            return os.path.join(path, 'python.exe')
-    raise FileNotFoundError("python.exe not found")
-
-
+    
 def test_read_wordlist(capsys):
     words_dict = {
         ("agsgsa", "AGDSR4", "!$#WDS"): "read_wordlist sanity failed.",
@@ -63,6 +63,7 @@ def test_read_matrix(capsys):
 
 
 def test_find_words_wide(capsys):
+    start = perf_counter()
     for suffix in ['', '0', 'R', 'C', 'Z']:
         _find_words_wide(suffix)
 
@@ -70,6 +71,7 @@ def test_find_words_wide(capsys):
     assert not captured.out and not captured.err, (f"No prints allowed!\nGot: "
                                                    f"out: {captured.out}\n"
                                                    f"err: {captured.err}\n")
+    print(f"Time: {perf_counter() - start}")
 
 
 def test_write_output(capsys):
@@ -127,6 +129,8 @@ def _find_words_wide(suffix):
         expected = [(i[0], int(i[1])) for i in expected]
         expected = sorted(expected)
         assert actual == expected, f"SUFFIX: {suffix}\n" \
+                                   f"words: {words}\n" \
+                                   f"matrix: {matrix}\n" \
                                    f"DIRECTION: {direction}\n" \
                                    f"ACTUAL {actual}\n" \
                                    f"EXPECTED: {expected}"
@@ -152,16 +156,18 @@ def _find_words_wide(suffix):
                 expected = sorted([(word, count) for word, count in
                                    expected_dict.items()])
                 assert actual == expected, f"SUFFIX: {suffix}\n" \
+                                           f"words: {words}\n" \
+                                           f"matrix: {matrix}\n" \
                                            f"DIRECTION: {direction_str}\n" \
                                            f"ACTUAL {actual}\n" \
                                            f"EXPECTED: {expected}"
 
 
 def test_main_wide(capsys):
+    start = perf_counter()
     directions = [filename[4:-4] for filename
                   in os.listdir(EX_DIR) if
                   filename.startswith('out_')]
-    python_path = get_python_path()
     script = inspect.getsource(wordsearch)
     original_argv = sys.argv.copy()
     for direction in directions:
@@ -179,9 +185,10 @@ def test_main_wide(capsys):
         expected = sorted(open(
             os.path.join(EX_DIR, f'out_{direction}.txt'),
             'r').read().split('\n'))
-        assert actual == expected, f"DIRECTION: {direction}\n"
-        f"ACTUAL {actual}\n"
-        f"EXPECTED: {expected}"
+        assert actual == expected, f"DIRECTION: {direction}\n"\
+            f"args: {sys.argv}\n" \
+            f"ACTUAL {actual}\n"\
+            f"EXPECTED: {expected}"
     for direction1 in directions:
         for direction2 in directions:
             for direction3 in directions:
@@ -212,6 +219,7 @@ def test_main_wide(capsys):
                 expected = sorted([f'{word},{count}' for word, count in
                                    expected_dict.items()] + [''])
                 assert actual == expected, f"DIRECTION: {direction_str}\n"
+                f"args: {sys.argv}\n"
                 f"ACTUAL {actual}\n"
                 f"EXPECTED: {expected}"
     sys.argv.clear()
@@ -221,3 +229,4 @@ def test_main_wide(capsys):
     assert not captured.out and not captured.err, (f"No prints allowed!\nGot: "
                                                    f"out: {captured.out}\n"
                                                    f"err: {captured.err}\n")
+    print(f"Time: {perf_counter() - start}")

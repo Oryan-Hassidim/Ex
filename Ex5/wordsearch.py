@@ -40,7 +40,7 @@ def read_wordlist(filename):
 
 def read_matrix(filename):
     """
-    Reads a matrix of charaters from file, seperated by commas.
+    Reads a matrix of characters from file, separated by commas.
     returns a list of lists.
     :param filename: path for the file.
     :return: list of lists.
@@ -54,7 +54,7 @@ def read_matrix(filename):
 
 def calculate_diagonal_directions(matrix):
     """
-    Takes a matrix as a parameter ang returns all diagonal from
+    Takes a matrix as a parameter and returns all diagonal from
     top-left to bottom-right.
     Like this:
     a b c d
@@ -67,7 +67,7 @@ def calculate_diagonal_directions(matrix):
         chunk[column: width * min(width - column, height): width + 1]
         for column in range(width)
     ]
-    lst2 = [chunk[row * width:min(row * width + width * width, len(chunk)):width + 1]
+    lst2 = [chunk[row * width: min(row * width + width * width, len(chunk)): width + 1]
             for row in range(1, height)]
     return lst1 + lst2
 

@@ -6,8 +6,8 @@
 # NOTES:
 #################################################################################
 
-from ex7_helper import add, append_to_end, is_odd, subtract_1, divide_by_2
 from typing import Any, List
+from ex7_helper import add, append_to_end, is_odd, subtract_1, divide_by_2
 
 
 def mult(x: float, y: int) -> float:
@@ -115,10 +115,9 @@ def play_hanoi(Hanoi: Any, n: int, src: Any, dst: Any, temp: Any) -> None:
     # I updated the algorithm to adapt to the requirements.
     if n == 0:
         return
-    else:
-        play_hanoi(Hanoi, n - 1, src, temp, dst)
-        Hanoi.move(src, dst)
-        play_hanoi(Hanoi, n - 1, temp, dst, src)
+    play_hanoi(Hanoi, n - 1, src, temp, dst)
+    Hanoi.move(src, dst)
+    play_hanoi(Hanoi, n - 1, temp, dst, src)
 
 
 def number_of_ones_core(n: int) -> int:
@@ -168,7 +167,8 @@ def compare_lists(l1: List[int], l2: List[int]) -> bool:
     :param l2: a list
     :return: True if l1 and l2 are equal, False otherwise
     """
-    if l1 is l2:
+    # equality of numbers
+    if id(l1) == id(l2):
         return True
     if len(l1) != len(l2):
         return False
@@ -199,7 +199,8 @@ def compare_2d_lists(l1: List[List[int]], l2: List[List[int]]) -> bool:
     :param l2: a 2D list
     :return: True if l1 and l2 are equal, False otherwise
     """
-    if l1 is l2:
+    # equality of numbers
+    if id(l1) == id(l2):
         return True
     if len(l1) != len(l2):
         return False
@@ -213,7 +214,7 @@ def magic_list(n: int, so_far: List[Any] = [None]) -> List[Any]:
     :return: a list of n lists
     """
     # initialize the recursion
-    if len(so_far) == 1 and so_far[0] == None:
+    if len(so_far) == 1 and so_far[0] is None:
         so_far = []
     # stopping condition
     if len(so_far) == n:

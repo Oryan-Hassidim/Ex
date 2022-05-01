@@ -1,7 +1,9 @@
 import os
 import sys
+import subprocess
 
-from wordsearch import find_words, main, read_wordlist
+from wordsearch import find_words, read_wordlist, main
+
 
 def test_1():
     assert find_words([], [], "") == []
@@ -31,24 +33,22 @@ def test_5():
 
 def test_6():
     directions = ["d", "l", "r", "u", "w", "x", "y", "z", "udlrwxyz"]
-    base_path = "C:\\Projects\\Oryan-Hassidim\\Ex\\Ex5\\Additional Files\\"
-    original_argv = sys.argv[:]
-    sys.argv.clear()
-    sys.argv += ["","","","",""]
+    base_path = "Additional Files"
+    executable = sys.executable
     for d in directions:
-        sys.argv[1] = base_path + "word_list.txt"
-        sys.argv[2] = base_path + "mat.txt"
-        sys.argv[3] = "C:\\users\\oryan\\desktop\\output.txt"
-        sys.argv[4] = d
-        main()
-        assert os.path.isfile("C:\\users\\oryan\\desktop\\output.txt")
-        expected = read_wordlist(f"{base_path}outfile_{d}.txt")
-        actual = read_wordlist("C:\\users\\oryan\\desktop\\output.txt")
-        assert len(actual) == len(set(actual))
-        assert set(expected) == set(actual)
-    sys.argv.clear()
-    sys.argv += original_argv
-
+        res = subprocess.run([executable,
+                              "wordsearch.py",
+                              os.path.join(base_path, "word_list.txt"),
+                              os.path.join(base_path, "mat.txt"),
+                              "output.txt",
+                              d], shell=True, stdout=subprocess.PIPE)
+        assert res.returncode == 0
+        assert res.stdout.decode("utf-8").strip() == ""
+        assert os.path.isfile("output.txt")
+        expected = read_wordlist(os.path.join(base_path, f"outfile_{d}.txt"))
+        actual = read_wordlist("output.txt")
+        os.remove("output.txt")
+        assert sorted(actual) == sorted(actual)
 
 
 def test_7():
@@ -92,11 +92,10 @@ def test_12():
 def test_13():
     mat = list(map(list, ["abcd",
                           "eabc"]))
-    expected = [("aa",1), ("bb",1), ("cc",1), ("d", 1), ("e", 1)]
+    expected = [("aa", 1), ("bb", 1), ("cc", 1), ("d", 1), ("e", 1)]
     actual = find_words(["aa", "bb", "cc", "dd", "ee", "d", "e"], mat, "y")
     assert len(actual) == len(set(actual))
     assert set(expected) == set(actual)
     actual = find_words(["aa", "bb", "cc", "dd", "ee", "d", "e"], mat, "x")
     assert len(actual) == len(set(actual))
     assert set(expected) == set(actual)
-    

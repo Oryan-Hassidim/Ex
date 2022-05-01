@@ -1,6 +1,7 @@
 ####################################################################
 # Oryan Hassidim
 # Oryan.Hassidim@mail.huji.ac.il
+# last update: 20/04/2022  09:30
 ####################################################################
 
 
@@ -53,7 +54,7 @@ def test_is_power():
         assert is_power(0, 0)
     except:
         raise AssertionError("There isn't edge case for is_power(0, 0)!")
-    for x in range(20):
+    for _ in range(20):
         try:
             assert not is_power(randint(1, 1000), 0)
         except:
@@ -107,6 +108,25 @@ def test_compare_2d_lists():
     assert compare_2d_lists([[1], []], [[1], []])
     assert not compare_2d_lists([[1], []], [[2], []])
     assert compare_2d_lists([[1], [2, 3]], [[1], [2, 3]])
+    
+    assert compare_2d_lists([[1, 2], [4, 5, 8]], [[1, 2], [4, 5, 8]])
+    assert compare_2d_lists([[], []], [[], []])
+    assert compare_2d_lists([[], [], [], [], []], [[], [], [], [], []])
+    assert compare_2d_lists([[], [], [], []], [[], [], [], []])
+    assert not compare_2d_lists([[1, 2], [4, 5, 8]], [[1, 2], [4, 5, 6]])
+    assert not compare_2d_lists([[1, 3], [4, 5, 8]], [[1, 2], [4, 5, 8]])
+    assert not compare_2d_lists([[1, 2], [4, 5, 8]], [[1, 2], [3, 5, 8]])
+    assert not compare_2d_lists([[3, 2], [4, 5, 8]], [[1, 2], [4, 5, 8]])
+    assert not compare_2d_lists([[1, 2], [4, 5, 8]], [[], [4, 5, 8]])
+    assert not compare_2d_lists([[1, 3], []], [[1, 2], []])
+    assert not compare_2d_lists([[], [4, 5, 8]], [[1, 2], [4, 5, 8]])
+    assert not compare_2d_lists([[1, 2], [4, 5, 8]], [[], [4, 5, 8]])
+    assert not compare_2d_lists([[1, 2], [4, 5, 8]], [[1, 2], [4, 5, 9]])
+    assert not compare_2d_lists([[], [], [], [], []], [[], [], [], []])
+    assert not compare_2d_lists([[], [5], [], [], []], [[], [], [], [], []])
+    assert not compare_2d_lists([[], [], [], [], []], [[], [], [], [], [6]])
+    assert not compare_2d_lists([[], [], [], [5], []], [[], [], [], [], [6]])
+    assert not compare_2d_lists([[], [], [5], [5], []], [[], [], [], [], [6]])
 
 
 def collect_deep(iterable, ids: Set[int]):
@@ -179,7 +199,7 @@ def main():
         count += run_test(test, globals()["test_" + test])
     print()
     if count == len(tests):
-        print("\033[1;32m=========All OK=========")
+        print("\033[1;32m==============All OK==============")
     else:
         print(f"\033[1;31m========={count}/{len(tests)} tests passed=========")
     print("\033[0m")
