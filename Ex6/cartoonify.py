@@ -101,7 +101,7 @@ def get_value_or_default(image: SingleChannelImage):
     return inner
 
 
-def apply_kernel_core(image: SingleChannelImage, kernel: Kernel, round_value = True):
+def apply_kernel_core(image: SingleChannelImage, kernel: Kernel):
     """
     Creates helper function for applying kernel.
     """
@@ -123,17 +123,17 @@ def apply_kernel_core(image: SingleChannelImage, kernel: Kernel, round_value = T
             val = get_val(row + di, col + dj, default)
             my_sum += pix * val
         
-        return max(0, min(255, round(my_sum))) if round_value else my_sum
+        return max(0, min(255, round(my_sum)))
 
     return inner
 
 
-def apply_kernel(image: SingleChannelImage, kernel: Kernel,  round_value = True) -> SingleChannelImage:
+def apply_kernel(image: SingleChannelImage, kernel: Kernel) -> SingleChannelImage:
     """
     Applies the given kernel for the given image.
     Edges takes the value of *calculated cell*.
     """
-    core = apply_kernel_core(image, kernel, round_value)
+    core = apply_kernel_core(image, kernel)
     res = []
     for row in range(len(image)):
         new_row = []
@@ -225,7 +225,7 @@ def get_edges(
     Takes an image and returns new images of the edges in the image.
     """
     blurred = apply_kernel(image, blur_kernel(blur_size))
-    avgs = apply_kernel(blurred, blur_kernel(block_size), False)
+    avgs = apply_kernel(blurred, blur_kernel(block_size))
     threshhold = map_2D(lambda pix: pix - c, avgs)
     for i in range(len(image)):
         for j in range(len(image[i])):

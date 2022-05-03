@@ -1,7 +1,7 @@
 ####################################################################
 # Oryan Hassidim
 # Oryan.Hassidim@mail.huji.ac.il
-# last update: 20/04/2022  09:30
+# last update: 02/05/2022  22:40
 ####################################################################
 
 
@@ -51,7 +51,8 @@ def test_log_mult():
 
 def test_is_power():
     try:
-        assert is_power(0, 0)
+        assert is_power(0, 0), "for all n 0^n=0"
+        assert is_power(0, 1), "0^0=1 (ex7 forum)"
     except:
         raise AssertionError("There isn't edge case for is_power(0, 0)!")
     for _ in range(20):
@@ -66,14 +67,15 @@ def test_is_power():
 
     for _ in range(100):
         b = randint(2, 100)
-        x1 = b ** randint(1, 15)
+        n = randint(1, 15)
+        x1 = b ** n
         x2 = b
         while x2 % b == 0 or x2 == 1:
             x2 = b * (randint(0, 1) + random())
             x2 = round(x2)
             x2 = x2 ** randint(1, 15)
-        assert is_power(b, x1)
-        assert not is_power(b, x2)
+        assert is_power(b, x1), f"is_power(b={b}, x={x1}) is True! {b}^{n}={x1}"
+        assert not is_power(b, x2), f"please check manually if is_power(b={b}, x={x2}) should be False"
 
 
 def test_reverse():
@@ -164,8 +166,8 @@ class MypyTypesError(Exception):
 
 
 def test_mypy_strict():
-    mypy = subprocess.run(["mypy", "--strict", "ex7.py"],
-                          stdout=subprocess.PIPE).stdout.decode('utf-8')
+    mypy = subprocess.run([sys.executable, "-m" ,"mypy", "--strict", "ex7.py"],
+                          shell = True, stdout=subprocess.PIPE).stdout.decode('utf-8')
     if mypy.count("error") != 0:
         raise MypyTypesError(mypy)
 

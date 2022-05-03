@@ -52,19 +52,20 @@ def log_mult(x: float, y: int) -> float:
     return res
 
 
-def is_power(b: int, x: int, so_far: int = -1) -> bool:
+def is_power_core(b: int, x: int, so_far: int = -1) -> bool:
     """
     Takes two numbers as parameters and returns True if the second is a power
     of the first, and False otherwise.
     :param b: a number
     :param x: a number
+    :param so_far: recursion parameter
     :return: True if x is a power of b, False otherwise
     """
 
     # initialize the recursion, and check bound values
     if so_far == -1:
         if b == 0:
-            return x == 0
+            return x == 1 or x == 0
         if x == 1:
             return True
         if x == 0:
@@ -79,10 +80,22 @@ def is_power(b: int, x: int, so_far: int = -1) -> bool:
     if so_far > x:
         return False
     # production in O(log(x)), and the log_mult is O(log(b))
-    return is_power(b, x, int(log_mult(so_far, b)))
+    return is_power_core(b, x, int(log_mult(so_far, b)))
 
 
-def reverse(s: str, i: int = 0) -> str:
+def is_power(b: int, x: int) -> bool:
+    """
+    Takes two numbers as parameters and returns True if the second is a power
+    of the first, and False otherwise.
+    :param b: a number
+    :param x: a number
+    :param so_far: recursion parameter
+    :return: True if x is a power of b, False otherwise
+    """
+    return is_power_core(b, x)
+
+
+def reverse_core(s: str, i: int = 0) -> str:
     """
     Takes a string as parameter and returns its reverse.
     :param s: a string
@@ -90,9 +103,18 @@ def reverse(s: str, i: int = 0) -> str:
     """
     if i == len(s):
         return ""
-    return append_to_end(reverse(s, i + 1), s[i])
+    return append_to_end(reverse_core(s, i + 1), s[i])
 
-    # another way:
+
+def reverse(s: str) -> str:
+    """
+    Takes a string as parameter and returns its reverse.
+    :param s: a string
+    :return: the reverse of s
+    """
+    return reverse_core(s)
+
+    # another way *with* slicing:
     # if s == "": return ""
     # return append_to_end(s[1:]), s[0])
 
@@ -207,24 +229,14 @@ def compare_2d_lists(l1: List[List[int]], l2: List[List[int]]) -> bool:
     return compare_2d_lists_rec(l1, l2)
 
 
-def magic_list(n: int, so_far: List[Any] = [None]) -> List[Any]:
+def magic_list(n: int) -> List[Any]:
     """
     Takes an integer as parameter and returns the n'th of magic list.
     :param n: an integer
     :return: a list of n lists
     """
-    # initialize the recursion
-    if len(so_far) == 1 and so_far[0] is None:
-        so_far = []
-    # stopping condition
-    if len(so_far) == n:
-        return so_far
-
-    so_far.append(magic_list(len(so_far)))
-    return magic_list(n, so_far)
-
-    # shorter option:
-    # if n == 0: return []
-    # res = magic_list(n-1)
-    # res.append(magic_list(n-1))
-    # return res
+    if n == 0:
+        return []
+    res = magic_list(n-1)
+    res.append(magic_list(n-1))
+    return res
