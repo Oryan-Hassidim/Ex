@@ -64,10 +64,12 @@ def is_power_core(b: int, x: int, so_far: int = -1) -> bool:
 
     # initialize the recursion, and check bound values
     if so_far == -1:
-        if b == 0:
-            return x in {0, 1}
         if x == 1:
             return True
+        if b == 0:
+            return x == 0
+        if b == 1:
+            return x == 1
         if x == 0:
             return False
         if is_odd(b) != is_odd(x):

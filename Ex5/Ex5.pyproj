@@ -106,9 +106,6 @@
     <Content Include="Ex5-Examples\wordsR.txt" />
     <Content Include="Ex5-Examples\wordsZ.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <InterpreterReference Include="Global|VisualStudio|python-3.7.3.amd64" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
        Visual Studio and specify your pre- and post-build commands in
