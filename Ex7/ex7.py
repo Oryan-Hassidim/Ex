@@ -5,7 +5,6 @@
 # DESCRIPTION: Simple function which use recursion.
 # NOTES:
 #################################################################################
-
 from typing import Any, List
 from ex7_helper import add, append_to_end, is_odd, subtract_1, divide_by_2
 
@@ -52,7 +51,7 @@ def log_mult(x: float, y: int) -> float:
     return res
 
 
-def is_power_core(b: int, x: int, so_far: int = -1) -> bool:
+def is_power_core(b: int, x: int, so_far: int=-1) -> bool:
     """
     Takes two numbers as parameters and returns True if the second is a power
     of the first, and False otherwise.
@@ -97,7 +96,7 @@ def is_power(b: int, x: int) -> bool:
     return is_power_core(b, x)
 
 
-def reverse_core(s: str, i: int = 0) -> str:
+def reverse_core(s: str, i: int=0) -> str:
     """
     Takes a string as parameter and returns its reverse.
     :param s: a string
@@ -119,7 +118,6 @@ def reverse(s: str) -> str:
     # another way *with* slicing:
     # if s == "": return ""
     # return append_to_end(s[1:]), s[0])
-
 
 def play_hanoi(Hanoi: Any, n: int, src: Any, dst: Any, temp: Any) -> None:
     """
@@ -167,7 +165,7 @@ def number_of_ones(n: int) -> int:
     return number_of_ones_core(n) + number_of_ones(n - 1)
 
 
-def compare_lists_rec(l1: List[int], l2: List[int], i: int = 0) -> bool:
+def compare_lists_rec(l1: List[int], l2: List[int], i: int=0) -> bool:
     """
     Takes two lists of integers of same length as parameters
     and returns True if they are equal, and False otherwise.
@@ -199,7 +197,7 @@ def compare_lists(l1: List[int], l2: List[int]) -> bool:
     return compare_lists_rec(l1, l2)
 
 
-def compare_2d_lists_rec(l1: List[List[int]], l2: List[List[int]], i: int = 0) -> bool:
+def compare_2d_lists_rec(l1: List[List[int]], l2: List[List[int]], i: int=0) -> bool:
     """
     Takes two 2D lists of integers of same length as parameters
     and returns True if they are equal, and False otherwise.
@@ -239,6 +237,6 @@ def magic_list(n: int) -> List[Any]:
     """
     if n == 0:
         return []
-    res = magic_list(n-1)
-    res.append(magic_list(n-1))
+    res = magic_list(n - 1)
+    res.append(magic_list(n - 1))
     return res

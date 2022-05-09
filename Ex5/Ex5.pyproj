@@ -18,7 +18,8 @@
     <CommandLineArguments>"C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\word_list.txt" "C:\Projects\Oryan-Hassidim\Ex\Ex5\Additional Files\mat.txt" "C:\users\oryan\desktop\output.txt" udlrwxyz</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <InterpreterId>Global|VisualStudio|python-3.7.3.amd64</InterpreterId>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
