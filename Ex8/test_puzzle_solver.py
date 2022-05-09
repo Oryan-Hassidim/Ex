@@ -1,7 +1,7 @@
 ####################################################################
 # Oryan Hassidim
 # Oryan.Hassidim@mail.huji.ac.il
-# last update: 08/05/2022  01:10
+# last update: 09/05/2022  23:45
 ####################################################################
 
 
@@ -44,8 +44,12 @@ def test_min_seen_cells():
 
 
 def test_check_constraints():
-    picture1 = [[-1, 0, 1, -1], [0, 1, -1, 1], [1, 0, 1, 0]]
-    picture2 = [[0, 0, 1, 1], [0, 1, 1, 1], [1, 0, 1, 0]]
+    picture1 = [[-1, 0, 1, -1],
+                [0, 1, -1, 1],
+                [1, 0, 1, 0]]
+    picture2 = [[0, 0, 1, 1],
+                [0, 1, 1, 1],
+                [1, 0, 1, 0]]
     assert check_constraints(picture1, {(0, 3, 5), (1, 2, 5), (2, 0, 1)}) == 0
     assert check_constraints(picture2, {(0, 3, 3), (1, 2, 5), (2, 0, 1)}) == 1
     assert check_constraints(picture1, {(0, 3, 3), (1, 2, 5), (2, 0, 1)}) == 2
@@ -306,7 +310,8 @@ def test_generate_puzzle():
         print("puzzle:", puzzle)
         assert how_many_solutions(puzzle, height, width) == 1
         for cons in puzzle:
-            assert how_many_solutions(puzzle - {cons}, height, width) > 1
+            assert how_many_solutions(puzzle - {cons}, height, width) > 1, \
+                f"minimal constraints needed!!\nunnecessary constraint: {cons}"
         sol = solve_puzzle(puzzle, height, width)
         assert check_constraints(sol, puzzle) == 1
         print_picture_2(sol, puzzle)
