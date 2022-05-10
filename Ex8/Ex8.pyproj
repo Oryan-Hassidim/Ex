@@ -24,6 +24,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="lab8.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="puzzle_solver.py" />
     <Compile Include="test_puzzle_solver.py">
       <SubType>Code</SubType>
