@@ -60,13 +60,13 @@ def test_is_power():
 
     for i in range(10, 110):
         b = randint(2, 100)
-        n = randint(1, i)
-        x1 = b ** n
-        n = randint(1,i)
-        minimum = (b ** n) + 1
-        maximum = (b ** (n + 1)) - 1
+        n1 = randint(1, i)
+        x1 = b ** n1
+        n2 = randint(1,i)
+        minimum = (b ** n2) + 1
+        maximum = (b ** (n2 + 1)) - 1
         x2 = randint(minimum, maximum)
-        assert is_power(b, x1), f"is_power(b={b}, x={x1}) is True! {b}^{n}={x1}"
+        assert is_power(b, x1), f"is_power(b={b}, x={x1}) is True! {b}^{n1}={x1}"
         assert not is_power(b, x2), f"please *check manually* if is_power(b={b}, x={x2}) should be False"
 
 
