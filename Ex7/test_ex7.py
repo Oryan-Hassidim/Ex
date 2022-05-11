@@ -57,13 +57,13 @@ def test_is_power():
         assert not is_power(randint(1, 1000), 0), "There isn't edge case for is_power(n, 0)!"
         assert is_power(randint(1, 1000), 1), "There isn't edge case for is_power(n, 1)!"
 
-    for _ in range(100):
+    for i in range(2, 100):
         b = randint(2, 100)
-        n = randint(1, 20)
+        n = randint(1, i)
         x1 = b ** n
         x2 = b
         while x2 == 1:
-            r = randint(1,20)
+            r = randint(1,i)
             x2 = randint(b ** r + 1, b ** (r + 1))
         assert is_power(b, x1), f"is_power(b={b}, x={x1}) is True! {b}^{n}={x1}"
         assert not is_power(b, x2), f"please *check manually* if is_power(b={b}, x={x2}) should be False"
