@@ -1,7 +1,7 @@
 ####################################################################
 # Oryan Hassidim
 # Oryan.Hassidim@mail.huji.ac.il
-# last update: 02/05/2022  22:40
+# last update: 10/05/2022  00:40
 ####################################################################
 
 
@@ -52,20 +52,21 @@ def test_log_mult():
 def test_is_power():
     assert is_power(0, 0), "for all n 0^n=0"
     assert is_power(0, 1), "0^0=1 (ex7 forum)"
-        
+    
     for _ in range(20):
         assert not is_power(randint(1, 1000), 0), "There isn't edge case for is_power(n, 0)!"
         assert is_power(randint(1, 1000), 1), "There isn't edge case for is_power(n, 1)!"
+        assert not is_power(1, randint(2,100)), "There isn't edge case for is_power(1, n)!"
 
-    for i in range(2, 100):
+    for i in range(10, 110):
         b = randint(2, 100)
-        n = randint(1, i)
-        x1 = b ** n
-        x2 = b
-        while x2 == 1:
-            r = randint(1,i)
-            x2 = randint(b ** r + 1, b ** (r + 1))
-        assert is_power(b, x1), f"is_power(b={b}, x={x1}) is True! {b}^{n}={x1}"
+        n1 = randint(1, i)
+        x1 = b ** n1
+        n2 = randint(1,i)
+        minimum = (b ** n2) + 1
+        maximum = (b ** (n2 + 1)) - 1
+        x2 = randint(minimum, maximum)
+        assert is_power(b, x1), f"is_power(b={b}, x={x1}) is True! {b}^{n1}={x1}"
         assert not is_power(b, x2), f"please *check manually* if is_power(b={b}, x={x2}) should be False"
 
 

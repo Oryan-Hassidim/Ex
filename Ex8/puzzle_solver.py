@@ -5,18 +5,17 @@
 # DESCRIPTION: app for finding solutions for the puzzle
 # NOTES: where is F# "yield!" keyword???
 #################################################################################
-
 from typing import List, Tuple, Set, Optional, Generator
 
 
-# We define the types of a partial picture and a constraint (for type checking).
+# We define the types of a partial picture and a constraint (for type
+# checking).
 Picture = List[List[int]]
 Constraint = Tuple[int, int, int]
 
 B = 0  # black
 W = 1  # white
 U = -1  # unknown
-
 DIRECTIONS = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 
 
@@ -61,6 +60,17 @@ def max_seen_cells(picture: Picture, row: int, col: int) -> int:
     return seen_cells(picture, row, col, {B})
 
 
+def min_seen_cells(picture: Picture, row: int, col: int) -> int:
+    """
+    Returns the maximum number of cells that can be seen by a white cell
+    in the given row and column.
+    :param picture: a picture
+    :param row: the row of the cell
+    :param col: the column of the cell
+    """
+    return seen_cells(picture, row, col, {B, U})
+
+
 def max_seen_cells_alt(picture: Picture, row: int, col: int) -> int:
     if picture[row][col] == B:
         return 0
@@ -75,17 +85,6 @@ def max_seen_cells_alt(picture: Picture, row: int, col: int) -> int:
         count, i = count + 1, row + 1
     while j < len(picture[0]) and picture[row][j] == B:
         count, j = count + 1, col + 1
-
-
-def min_seen_cells(picture: Picture, row: int, col: int) -> int:
-    """
-    Returns the maximum number of cells that can be seen by a white cell
-    in the given row and column.
-    :param picture: a picture
-    :param row: the row of the cell
-    :param col: the column of the cell
-    """
-    return seen_cells(picture, row, col, {B, U})
 
 
 def check_constraint(picture: Picture, constraint: Constraint) -> int:
@@ -156,7 +155,7 @@ def fill(picture, constraints_set, size, width, ij=0):
     :return: generator of solutions
     """
     if ij == size:
-        assert check_constraints(picture, constraints_set) == 1
+        # assert check_constraints(picture, constraints_set) == 1
         yield picture
         return
 
@@ -184,8 +183,7 @@ def find_solutions_core(picture, constraints_set, size, width, ij=0):
             yield picture
         return
 
-    check_val = check_constraints_on_cell(
-        picture, constraints_set, width, ij - 1)
+    check_val = check_constraints_on_cell(picture, constraints_set, width, ij - 1)
 
     if check_val == 0:
         return
@@ -205,9 +203,7 @@ def find_solutions_core(picture, constraints_set, size, width, ij=0):
     picture[i][j] = original
 
 
-def find_solutions(
-    constraints_set: Set[Constraint], n: int, m: int
-) -> Generator[Picture, None, None]:
+def find_solutions(constraints_set: Set[Constraint], n: int, m: int) -> Generator[Picture, None, None]:
     """
     Finds all solutions to the puzzle using backtracking.
     :param constraints_set: a set of constraints
@@ -221,7 +217,7 @@ def find_solutions(
             picture[i][j] = B
         else:
             picture[i][j] = W
-    yield from find_solutions_core(picture, constraints_set, n*m, m)
+    yield from find_solutions_core(picture, constraints_set, n * m, m)
 
 
 def solve_puzzle(constraints_set: Set[Constraint], n: int, m: int) -> Optional[Picture]:
@@ -261,7 +257,7 @@ def excactly_1_sol(constraints_set: Set[Constraint], n: int, m: int):
     return i == 1
 
 
-def find_all_puzzles(constraints, picture) -> Generator[Set[Constraint], None, None]:
+def find_puzzles_core(constraints, picture) -> Generator[Set[Constraint], None, None]:
     """
     Finds all the possible puzzles *with repetitions* that can be obtained by filling the given picture.
     :param constraints: a set of constraints
@@ -274,7 +270,7 @@ def find_all_puzzles(constraints, picture) -> Generator[Set[Constraint], None, N
     flag = True
     for constraint in constraints:
         constraints.remove(constraint)
-        for puzzle in find_all_puzzles(constraints, picture):
+        for puzzle in find_puzzles_core(constraints, picture):
             yield puzzle
             flag = False
         constraints.add(constraint)
@@ -282,7 +278,7 @@ def find_all_puzzles(constraints, picture) -> Generator[Set[Constraint], None, N
         yield constraints
 
 
-def generate_all_puzzles(picture: Picture) -> Generator[Set[Constraint], None, None]:
+def find_puzzles(picture: Picture) -> Generator[Set[Constraint], None, None]:
     """
     Generates all the possible puzzles *with repetitions* that can be obtained by filling the given picture.
     :param picture: a picture
@@ -292,7 +288,7 @@ def generate_all_puzzles(picture: Picture) -> Generator[Set[Constraint], None, N
     for i, row in enumerate(picture):
         for j, _ in enumerate(row):
             constraints.add((i, j, min_seen_cells(picture, i, j)))
-    yield from find_all_puzzles(constraints, picture)
+    yield from find_puzzles_core(constraints, picture)
 
 
 def generate_puzzle(picture: Picture) -> Set[Constraint]:
@@ -301,7 +297,7 @@ def generate_puzzle(picture: Picture) -> Set[Constraint]:
     :param picture: a picture
     :return: a puzzle which define the picture exactly
     """
-    for puzzle in generate_all_puzzles(picture):
+    for puzzle in find_puzzles(picture):
         return puzzle
 
 

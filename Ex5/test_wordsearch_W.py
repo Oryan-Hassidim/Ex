@@ -224,6 +224,7 @@ def test_main_wide(capsys):
                 f"EXPECTED: {expected}"
     sys.argv.clear()
     sys.argv.extend(original_argv)
+    os.remove(OUTPUT_FILE)
 
     captured = capsys.readouterr()
     assert not captured.out and not captured.err, (f"No prints allowed!\nGot: "

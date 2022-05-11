@@ -47,8 +47,8 @@ def test_6():
         assert os.path.isfile("output.txt")
         expected = read_wordlist(os.path.join(base_path, f"outfile_{d}.txt"))
         actual = read_wordlist("output.txt")
-        os.remove("output.txt")
         assert sorted(actual) == sorted(actual)
+    os.remove("output.txt")
 
 
 def test_7():
