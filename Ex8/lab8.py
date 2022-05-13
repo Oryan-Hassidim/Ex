@@ -35,3 +35,60 @@ def num_filtered_permutations(word, first = ""):
             options.add(new_word)
     return count
 
+
+funcs = []
+for i in range(10):
+    funcs.append(lambda: print(i))
+
+for j in range(10):
+    funcs[j]()
+
+funcs = []
+for i in range(10):
+    temp = i
+    funcs.append(lambda: print(temp))
+
+for j in range(10):
+    funcs[j]()
+
+
+funcs = []
+for i in range(10):
+    temp = i
+    funcs.append(lambda: print(temp))
+
+for i in range(10):
+    funcs[i]()
+
+
+funcs = []
+for i in range(10):
+    funcs.append(lambda: print(i))
+
+for i in range(10):
+    funcs[i]()
+
+
+funcs = []
+for i in range(10):
+    funcs.append(lambda: print(i))
+
+for i in funcs:
+    i()
+
+
+m = map(lambda x,y: x*y, [0,1],(1,2))
+
+
+
+def adding(n, current):
+    if n == -1:
+        return current
+    current = adding(n-1, current)
+    current.append(magic_list(n))
+    return current
+
+def magic_list(n):
+    if n == 0:
+        return []
+    return adding(n-1, [])
