@@ -2,8 +2,8 @@
 # FILE: puzzle_solver.py
 # WRITER: Oryan Hassidim , oryan.hassidim , 319131579
 # EXERCISE: Intro2cs2 ex8 2021-2022
-# DESCRIPTION: app for finding solutions for the puzzle
-# NOTES: where is F# "yield!" keyword???
+# DESCRIPTION: app for finding solutions for the puzzle.
+# NOTES:
 #################################################################################
 from typing import List, Tuple, Set, Optional, Generator
 
@@ -16,7 +16,10 @@ Constraint = Tuple[int, int, int]
 B = 0  # black
 W = 1  # white
 U = -1  # unknown
+KNOWN = {B, W}
 DIRECTIONS = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+
+#################################################################################
 
 
 def check_bounds(matrix, i, j):
@@ -57,7 +60,7 @@ def max_seen_cells(picture: Picture, row: int, col: int) -> int:
     :param row: the row of the cell
     :param col: the column of the cell
     """
-    return seen_cells(picture, row, col, {B})
+    return seen_cells(picture, row, col, max_seen_cells.__blocks)
 
 
 def min_seen_cells(picture: Picture, row: int, col: int) -> int:
@@ -68,23 +71,13 @@ def min_seen_cells(picture: Picture, row: int, col: int) -> int:
     :param row: the row of the cell
     :param col: the column of the cell
     """
-    return seen_cells(picture, row, col, {B, U})
+    return seen_cells(picture, row, col, min_seen_cells.__blocks)
 
+# single instance of the sets
+max_seen_cells.__blocks = {B}
+min_seen_cells.__blocks = {B, U}
 
-def max_seen_cells_alt(picture: Picture, row: int, col: int) -> int:
-    if picture[row][col] == B:
-        return 0
-    count = 1
-    i, j = row - 1, col - 1
-    while i >= 0 and picture[i][col] == B:
-        count, i = count + 1, row - 1
-    while j >= 0 and picture[row][j] == B:
-        count, j = count + 1, col - 1
-    i, j = row + 1, col + 1
-    while i < len(picture) and picture[i][col] == B:
-        count, i = count + 1, row + 1
-    while j < len(picture[0]) and picture[row][j] == B:
-        count, j = count + 1, col + 1
+#################################################################################
 
 
 def check_constraint(picture: Picture, constraint: Constraint) -> int:
@@ -143,6 +136,8 @@ def check_constraints_on_cell(picture, constraints_set, width, ij) -> int:
     rest = check_constraints(picture, constraints_set - constraints)
     return max(check_val_c, rest)
 
+#################################################################################
+
 
 def fill(picture, constraints_set, size, width, ij=0):
     """
@@ -161,7 +156,7 @@ def fill(picture, constraints_set, size, width, ij=0):
 
     i, j = ij // width, ij % width
     original = picture[i][j]
-    for fill_option in ({W, B} if original == U else {original}):
+    for fill_option in (KNOWN if original == U else {original}):
         picture[i][j] = fill_option
         yield from fill(picture, constraints_set, size, width, ij + 1)
     picture[i][j] = original
@@ -183,7 +178,8 @@ def find_solutions_core(picture, constraints_set, size, width, ij=0):
             yield picture
         return
 
-    check_val = check_constraints_on_cell(picture, constraints_set, width, ij - 1)
+    check_val = check_constraints_on_cell(
+        picture, constraints_set, width, ij - 1)
 
     if check_val == 0:
         return
@@ -192,12 +188,12 @@ def find_solutions_core(picture, constraints_set, size, width, ij=0):
         yield from fill(picture, constraints_set, size, width, ij)
         return
 
-    while picture[ij // width][ij % width] in {B, W}:
+    while picture[ij // width][ij % width] in KNOWN:
         ij += 1
 
     i, j = ij // width, ij % width
     original = picture[i][j]
-    for option in {W, B}:
+    for option in KNOWN:
         picture[i][j] = option
         yield from find_solutions_core(picture, constraints_set, size, width, ij + 1)
     picture[i][j] = original
@@ -218,6 +214,8 @@ def find_solutions(constraints_set: Set[Constraint], n: int, m: int) -> Generato
         else:
             picture[i][j] = W
     yield from find_solutions_core(picture, constraints_set, n * m, m)
+
+#################################################################################
 
 
 def solve_puzzle(constraints_set: Set[Constraint], n: int, m: int) -> Optional[Picture]:
@@ -243,6 +241,8 @@ def how_many_solutions(constraints_set: Set[Constraint], n: int, m: int) -> int:
     """
     # generator count - the list is many references to the *same* image.
     return len(list(find_solutions(constraints_set, n, m)))
+
+#################################################################################
 
 
 def excactly_1_sol(constraints_set: Set[Constraint], n: int, m: int):
@@ -299,6 +299,8 @@ def generate_puzzle(picture: Picture) -> Set[Constraint]:
     """
     for puzzle in find_puzzles(picture):
         return puzzle
+
+#################################################################################
 
 
 def picture_to_str(picture):

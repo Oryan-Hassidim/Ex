@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>0048b14a-b378-4a52-95bc-077ea86c252b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>gui_try.py</StartupFile>
+    <StartupFile>test_puzzle_solver.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
