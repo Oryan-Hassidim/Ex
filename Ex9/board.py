@@ -1,11 +1,10 @@
-from typing import Tuple, Literal, List, Optional, Dict
-from car import Car
+from typing import Tuple, List, Optional, Dict, Any
 
 Coordinates = Tuple[int, int]
-Orientation = Literal[0, 1]
+# Orientation = Literal[0, 1]
 VERTICAL = 0
 HORIZONTAL = 1
-Movekey = Literal['u', 'd', 'r', 'l']
+# Movekey = Literal['u', 'd', 'r', 'l']
 ORIENTATIONS = {0: (1, 0), 1: (0, 1)}
 DIRECTIONS = {'u': (-1, 0), 'd': (1, 0), 'r': (0, 1), 'l': (1, 0)}
 MOVE_KEYS = ['u', 'd', 'r', 'l']
@@ -16,7 +15,7 @@ COLORS = {
     'O': "\033[46;30mO \033[0m",
     'W': "\033[47;30mB \033[0m",
     'G': "\033[42;30mG \033[0m",
-    'R': "\033[42;30mR \033[0m"
+    'R': "\033[41;30mR \033[0m"
 }
 
 
@@ -29,7 +28,7 @@ class Board:
         # implement your code and erase the "pass"
         # Note that this function is required in your Board implementation.
         # However, is not part of the API for general board types.
-        board: Dict[Tuple[int, int], Optional[Car]] = {}
+        board = {}
         for i in range(4):
             for j in range(7):
                 board[i, j] = None
@@ -38,7 +37,7 @@ class Board:
             for j in range(7):
                 board[i, j] = None
         self.__board = board
-        self.__cars: List[Car] = []
+        self.__cars: List[Any] = []
 
     def __format_cell(self, i, j):
         """
@@ -109,7 +108,7 @@ class Board:
         i, j = coordinate
         return None if self.__board[i, j] is None else self.__board[i, j].get_name()
 
-    def add_car(self, car: Car):
+    def add_car(self, car):
         """
         Adds a car to the game.
         :param car: car object of car to add

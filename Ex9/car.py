@@ -1,10 +1,10 @@
-from typing import Tuple, Literal, Dict
+from typing import Tuple, Dict
 
 Coordinates = Tuple[int, int]
-Orientation = Literal[0, 1]
+# Orientation = Literal[0, 1]
 VERTICAL = 0
 HORIZONTAL = 1
-Movekey = Literal['u', 'd', 'r', 'l']
+# Movekey = Literal['u', 'd', 'r', 'l']
 ORIENTATIONS = {0: (1, 0), 1: (0, 1)}
 DIRECTIONS = {'u': (-1, 0), 'd': (1, 0), 'r': (0, 1), 'l': (0, -1)}
 MOVE_KEYS = ['u', 'd', 'r', 'l']
@@ -23,7 +23,7 @@ class Car:
         """
         return (coor1[0] + coor2[0], coor1[1] + coor2[1])
 
-    def __init__(self, name: str, length: int, location: Coordinates, orientation: Orientation):
+    def __init__(self, name: str, length: int, location: Coordinates, orientation):
         """
         A constructor for a Car object
         :param name: A string representing the car's name
@@ -34,9 +34,9 @@ class Car:
         # Note that this function is required in your Car implementation.
         # However, is not part of the API for general car types.
         # implement your code and erase the "pass"
-        if any(x < 0 for x in location):
-            raise ValueError("location must be positive")
-        if length not in SUPPORTED_LENGTHS:
+        # if any(x < 0 for x in location):
+        #     raise ValueError("location must be positive")
+        if length <= 0:
             raise ValueError("length must be positive")
         if orientation not in ORIENTATIONS:
             raise ValueError("orientation must be 0 or 1")
@@ -52,7 +52,7 @@ class Car:
         d1, dj = ORIENTATIONS[self.__orientation]
         return [Car.__add_coordinates(self.__location, (d*d1, d*dj)) for d in range(self.__length)]
 
-    def possible_moves(self) -> Dict[Movekey, str]:
+    def possible_moves(self):
         """
         :return: A dictionary of strings describing possible movements permitted by this car.
         """
@@ -60,17 +60,24 @@ class Car:
         # The keys for vertical cars are 'u' and 'd'.
         # The keys for horizontal cars are 'l' and 'r'.
         # You may choose appropriate strings.
-        res = {}
-        ori = self.__orientation
-        if ori == VERTICAL:
-            res['d'] = "cause the car to move one step down"
-            if self.__location[0] > 0:
-                res['u'] = "cause the car to move one step up"
-        else:
-            res['r'] = "cause the car to move one step right"
-            if self.__location[1] > 0:
-                res['l'] = "cause the car to move one step left"
-        return res
+        #res = {}
+        #ori = self.__orientation
+        # if ori == VERTICAL:
+        #    res['d'] = "cause the car to move one step down"
+        #    if self.__location[0] > 0:
+        #        res['u'] = "cause the car to move one step up"
+        # else:
+        #    res['r'] = "cause the car to move one step right"
+        #    if self.__location[1] > 0:
+        #        res['l'] = "cause the car to move one step left"
+        # return res
+        return {
+            'u': 'cause the car to move one step up',
+            'd': 'cause the car to move one step down'
+        } if self.__orientation == VERTICAL else {
+            'r': 'cause the car to move one step right',
+            'l': 'cause the car to move one step left'
+        }
 
     __first_or_last = {'u': 0, 'd': -1, 'l': 0, 'r': -1}
 
@@ -83,7 +90,8 @@ class Car:
         # be empty in order to move down (with a key 'd').
         # implement your code and erase the "pass"
         if movekey not in self.possible_moves():
-            raise ValueError("movekey must be one of possible movekeys")
+            # raise ValueError("movekey must be one of possible movekeys")
+            return []
         last_coor = self.car_coordinates()[Car.__first_or_last[movekey]]
         return [Car.__add_coordinates(last_coor, DIRECTIONS[movekey])]
 
@@ -94,7 +102,8 @@ class Car:
         """
         # implement your code and erase the "pass"
         if movekey not in MOVE_KEYS:
-            raise ValueError("movekey must be one of 'udrl'")
+            # raise ValueError("movekey must be one of 'udrl'")
+            return False
         if movekey not in self.possible_moves():
             return False
         self.__location = Car.__add_coordinates(

@@ -1,5 +1,4 @@
-
-from typing import Tuple, Literal, List, Optional, Dict
+from typing import Tuple, List, Optional, Dict
 from sys import argv, exit
 from helper import load_json
 from os.path import isfile
@@ -8,10 +7,10 @@ from car import Car
 from board import Board
 
 Coordinates = Tuple[int, int]
-Orientation = Literal[0, 1]
+# Orientation = Literal[0, 1]
 VERTICAL = 0
 HORIZONTAL = 1
-Movekey = Literal['u', 'd', 'r', 'l']
+# Movekey = Literal['u', 'd', 'r', 'l']
 ORIENTATIONS = {0: (1, 0), 1: (0, 1)}
 DIRECTIONS = {'u': (-1, 0), 'd': (1, 0), 'r': (0, 1), 'l': (1, 0)}
 MOVE_KEYS = ['u', 'd', 'r', 'l']
