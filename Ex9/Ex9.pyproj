@@ -2,21 +2,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>0048b14a-b378-4a52-95bc-077ea86c252b</ProjectGuid>
+    <ProjectGuid>d32b3c13-8d0c-4fbb-b5ba-0bb17e1c3aaa</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>test_puzzle_solver.py</StartupFile>
+    <StartupFile>game.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>Ex8</Name>
-    <RootNamespace>Ex8</RootNamespace>
-    <TestFramework>pytest</TestFramework>
-    <UnitTestPattern>test*.py</UnitTestPattern>
-    <UnitTestRootDirectory>.</UnitTestRootDirectory>
+    <Name>Ex9</Name>
+    <RootNamespace>Ex9</RootNamespace>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <InterpreterId>
-    </InterpreterId>
+    <InterpreterId>Global|PythonCore|3.10</InterpreterId>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>car_config.json</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,16 +26,19 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="gui_try.py">
+    <InterpreterReference Include="Global|PythonCore|3.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="board.py" />
+    <Compile Include="car.py" />
+    <Compile Include="game.py" />
+    <Compile Include="helper.py" />
+    <Compile Include="lab9.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="lab8.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="puzzle_solver.py" />
-    <Compile Include="test_puzzle_solver.py">
-      <SubType>Code</SubType>
-    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="car_config.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
