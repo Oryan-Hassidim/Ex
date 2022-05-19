@@ -635,6 +635,8 @@ def print_picture_2(picture, constraints):
 
 def test_generate_puzzle():
     options = [B, W]
+    assert generate_puzzle([[B]]) == {(0,0,0)}
+    assert generate_puzzle([[W]]) == {(0,0,1)}
     for i in range(40):
         print(f"\033[4m\033[1m{i+1}:\033[24m\033[22m")
         height = randint(1, 7)

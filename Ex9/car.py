@@ -1,13 +1,14 @@
 from typing import Tuple, Dict
 
-Coordinates = Tuple[int, int]
-# Orientation = Literal[0, 1]
+Coordinate = Tuple[int, int]
+Orientation = int  # Literal[0, 1]
+Movekey = str  # Literal['u', 'd', 'r', 'l']
+
 VERTICAL = 0
 HORIZONTAL = 1
-# Movekey = Literal['u', 'd', 'r', 'l']
 ORIENTATIONS = {0: (1, 0), 1: (0, 1)}
 DIRECTIONS = {'u': (-1, 0), 'd': (1, 0), 'r': (0, 1), 'l': (0, -1)}
-MOVE_KEYS = ['u', 'd', 'r', 'l']
+MOVE_KEYS = {'u', 'd', 'r', 'l'}
 SUPPORTED_LENGTHS = {2, 3, 4}
 
 
@@ -23,7 +24,7 @@ class Car:
         """
         return (coor1[0] + coor2[0], coor1[1] + coor2[1])
 
-    def __init__(self, name: str, length: int, location: Coordinates, orientation):
+    def __init__(self, name: str, length: int, location: Coordinate, orientation):
         """
         A constructor for a Car object
         :param name: A string representing the car's name
@@ -34,8 +35,6 @@ class Car:
         # Note that this function is required in your Car implementation.
         # However, is not part of the API for general car types.
         # implement your code and erase the "pass"
-        # if any(x < 0 for x in location):
-        #     raise ValueError("location must be positive")
         if length <= 0:
             raise ValueError("length must be positive")
         if orientation not in ORIENTATIONS:
@@ -60,17 +59,6 @@ class Car:
         # The keys for vertical cars are 'u' and 'd'.
         # The keys for horizontal cars are 'l' and 'r'.
         # You may choose appropriate strings.
-        #res = {}
-        #ori = self.__orientation
-        # if ori == VERTICAL:
-        #    res['d'] = "cause the car to move one step down"
-        #    if self.__location[0] > 0:
-        #        res['u'] = "cause the car to move one step up"
-        # else:
-        #    res['r'] = "cause the car to move one step right"
-        #    if self.__location[1] > 0:
-        #        res['l'] = "cause the car to move one step left"
-        # return res
         return {
             'u': 'cause the car to move one step up',
             'd': 'cause the car to move one step down'
@@ -81,7 +69,7 @@ class Car:
 
     __first_or_last = {'u': 0, 'd': -1, 'l': 0, 'r': -1}
 
-    def movement_requirements(self, movekey):
+    def movement_requirements(self, movekey : Movekey):
         """ 
         :param movekey: A string representing the key of the required move.
         :return: A list of cell locations which must be empty in order for this move to be legal.

@@ -6,14 +6,15 @@ from os.path import isfile
 from car import Car
 from board import Board
 
-Coordinates = Tuple[int, int]
-# Orientation = Literal[0, 1]
+Coordinate = Tuple[int, int]
+Orientation = int  # Literal[0, 1]
+Movekey = str  # Literal['u', 'd', 'r', 'l']
+
 VERTICAL = 0
 HORIZONTAL = 1
-# Movekey = Literal['u', 'd', 'r', 'l']
 ORIENTATIONS = {0: (1, 0), 1: (0, 1)}
 DIRECTIONS = {'u': (-1, 0), 'd': (1, 0), 'r': (0, 1), 'l': (1, 0)}
-MOVE_KEYS = ['u', 'd', 'r', 'l']
+MOVE_KEYS = {'u', 'd', 'r', 'l'}
 SUPPORTED_LENGTHS = {2, 3, 4}
 SUPPORTED_NAMES = {'Y', 'B', 'O', 'W', 'G', 'R'}
 
@@ -75,13 +76,16 @@ class Game:
             self.__print_error()
             return True
 
-        color = command[0]
+        car = command[0]
         movekey = command[2]
         board = self.__board
-        if (color, movekey) not in ((c, d) for c, d, _ in board.possible_moves()):
+        if car not in SUPPORTED_NAMES or movekey not in MOVE_KEYS:
             self.__print_error()
             return True
-        if board.move_car(color, movekey):
+        if (car, movekey) not in ((c, d) for c, d, _ in board.possible_moves()):
+            self.__print_error()
+            return True
+        if board.move_car(car, movekey):
             print(board, end="\n\n")
         else:
             self.__print_error()
@@ -93,10 +97,10 @@ class Game:
         :return: None
         """
         # implement your code here (and then delete the next line - 'pass')
+        board = self.__board
         print(WELCOME_MESSAGE)
         print("Your board:")
-        board = self.__board
-        print(board)
+        print(board, end="\n\n")
         while self.__single_turn() and board.cell_content(board.target_location()) is None:
             pass
         if board.cell_content(board.target_location()) is not None:  # win
@@ -109,29 +113,18 @@ def initialize_board(json):
     board = Board()
     for name, (length, (i, j), orientation) in json.items():
         if name not in SUPPORTED_NAMES:
-            print(
-                f"the name {name} is not supported! {SUPPORTED_NAMES} only allowed!")
-            return
+            continue
         if length not in SUPPORTED_LENGTHS:
-            print(
-                f"the length {length} is not supported! {SUPPORTED_LENGTHS} only allowed")
-            return
+            continue
         if (i, j) not in board.cell_list():
-            print(f"the coordinates {(i,j)} is not supported!")
-            return
+            continue
         if orientation not in ORIENTATIONS:
-            print(f"the orientation {orientation} is not supported!\
-                    {ORIENTATIONS.keys()} only allowed!")
-            return
+            continue
         try:
             car = Car(name, length, (i, j), orientation)
+            board.add_car(car)
         except Exception as e:
-            print(e)
-            return
-
-        if not board.add_car(car):
-            print(f"unexpected error wit car {name}.")
-            return
+            continue
     return board
 
 

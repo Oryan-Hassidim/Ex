@@ -12,10 +12,13 @@
     <Name>Ex9</Name>
     <RootNamespace>Ex9</RootNamespace>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <InterpreterId>Global|PythonCore|3.10</InterpreterId>
+    <InterpreterId>Global|VisualStudio|python-3.7.3.amd64</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <CommandLineArguments>car_config.json</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <TestFramework>pytest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,6 +30,7 @@
   </PropertyGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.10" />
+    <InterpreterReference Include="Global|VisualStudio|python-3.7.3.amd64" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="board.py" />
@@ -36,6 +40,12 @@
     <Compile Include="lab9.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="test_board.py" />
+    <Compile Include="test_car.py" />
+    <Compile Include="test_ex9.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test_game.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="car_config.json" />

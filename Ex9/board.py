@@ -13,7 +13,7 @@ COLORS = {
     'Y': "\033[43;30mY \033[0m",
     'B': "\033[44;37mB \033[0m",
     'O': "\033[46;30mO \033[0m",
-    'W': "\033[47;30mB \033[0m",
+    'W': "\033[47;30mW \033[0m",
     'G': "\033[42;30mG \033[0m",
     'R': "\033[41;30mR \033[0m"
 }
@@ -37,7 +37,7 @@ class Board:
             for j in range(7):
                 board[i, j] = None
         self.__board = board
-        self.__cars: List[Any] = []
+        self.__cars = {}
 
     def __format_cell(self, i, j):
         """
@@ -84,7 +84,7 @@ class Board:
         #[('O','d',"some description"),('R','r',"some description"),('O','u',"some description")]
         board = self.__board
         return [(car.get_name(), movkey, description)
-                for car in self.__cars
+                for car in self.__cars.values()
                 for movkey, description in car.possible_moves().items()
                 if all((i, j) in board
                        and board[i, j] is None
@@ -118,13 +118,14 @@ class Board:
         # You may assume the car is a legal car object following the API.
         # implement your code and erase the "pass"
         board = self.__board
-        if car in self.__cars or car.get_name() in (car.get_name() for car in self.__cars):
+        name = car.get_name()
+        if name in self.__cars:
             return False
         if not all((i, j) in board
                    and board[i, j] is None
                    for i, j in car.car_coordinates()):
             return False
-        self.__cars.append(car)
+        self.__cars[name] = car
         for i, j in car.car_coordinates():
             board[i, j] = car
         return True
@@ -137,9 +138,9 @@ class Board:
         :return: True upon success, False otherwise
         """
         # implement your code and erase the "pass"
-        if name not in (car.get_name() for car in self.__cars):
+        if name not in self.__cars:
             return False
-        car = next(car for car in self.__cars if car.get_name() == name)
+        car = self.__cars[name]
         if movekey not in car.possible_moves():
             return False
         if not all((i, j) in self.__board
