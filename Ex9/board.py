@@ -1,41 +1,45 @@
+#################################################################################
+# FILE: board.py
+# WRITER: Oryan Hassidim , oryan.hassidim , 319131579
+# EXERCISE: Intro2cs2 ex9 2021-2022
+# DESCRIPTION: Board class for rush-hour game.
+# NOTES:
+#################################################################################
+
 from typing import Tuple, List, Optional, Dict, Any
 
 Coordinates = Tuple[int, int]
-# Orientation = Literal[0, 1]
-VERTICAL = 0
-HORIZONTAL = 1
-# Movekey = Literal['u', 'd', 'r', 'l']
-ORIENTATIONS = {0: (1, 0), 1: (0, 1)}
-DIRECTIONS = {'u': (-1, 0), 'd': (1, 0), 'r': (0, 1), 'l': (1, 0)}
-MOVE_KEYS = ['u', 'd', 'r', 'l']
-EMPTY_STR = "- "
-COLORS = {
-    'Y': "\033[43;30mY \033[0m",
-    'B': "\033[44;37mB \033[0m",
-    'O': "\033[46;30mO \033[0m",
-    'W': "\033[47;30mW \033[0m",
-    'G': "\033[42;30mG \033[0m",
-    'R': "\033[41;30mR \033[0m"
-}
+Orientation = int  # Literal[0, 1]
+Movekey = str  # Literal['u', 'd', 'r', 'l']
 
 
 class Board:
     """
     Game object of single board for rush-hour game.
     """
+    EMPTY_STR = "\033[47m- \033[0m"
+    TARGET_STR = "\033[47;90m**\033[0m"
+    TARGET_CELL = 3, 7
+    # console colors for windows console.
+    # https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#text-formatting
+    COLORS = {
+        'Y': "\033[103;30mY \033[0m",
+        'B': "\033[44;37mB \033[0m",
+        'O': "\033[43;30mO \033[0m",
+        'W': "\033[107;30mW \033[0m",
+        'G': "\033[42;30mG \033[0m",
+        'R': "\033[41;30mR \033[0m"
+    }
 
     def __init__(self):
         # implement your code and erase the "pass"
         # Note that this function is required in your Board implementation.
         # However, is not part of the API for general board types.
         board = {}
-        for i in range(4):
+        for i in range(7):
             for j in range(7):
                 board[i, j] = None
-        board[3, 7] = None
-        for i in range(4, 7):
-            for j in range(7):
-                board[i, j] = None
+        board[Board.TARGET_CELL] = None
         self.__board = board
         self.__cars = {}
 
@@ -45,11 +49,9 @@ class Board:
         """
         cell = self.__board[i, j]
         if cell is None:
-            return "**" if (i, j) == self.target_location() else EMPTY_STR
+            return Board.TARGET_STR if (i, j) == self.target_location() else Board.EMPTY_STR
         else:
-            if cell.get_name() in COLORS:
-                return COLORS[cell.get_name()]
-            return cell.get_name()
+            return Board.COLORS.get(cell.get_name(), f"{cell.get_name():<2}")
 
     def __str__(self):
         """
@@ -57,7 +59,6 @@ class Board:
         :return: A string of the current status of the board
         """
         res = ""
-        board = self.__board
         res += "\n".join("".join(self.__format_cell(i, j)
                                  for j in range(7))
                          for i in range(4))
@@ -96,7 +97,7 @@ class Board:
         :return: (row,col) of goal location
         """
         # In this board, returns (3,7)
-        return (3, 7)
+        return Board.TARGET_CELL
 
     def cell_content(self, coordinate):
         """
@@ -105,8 +106,7 @@ class Board:
         :return: The name if the car in coordinate, None if empty
         """
         # implement your code and erase the "pass"
-        i, j = coordinate
-        return None if self.__board[i, j] is None else self.__board[i, j].get_name()
+        return self.__board[coordinate]
 
     def add_car(self, car):
         """
@@ -121,13 +121,13 @@ class Board:
         name = car.get_name()
         if name in self.__cars:
             return False
-        if not all((i, j) in board
-                   and board[i, j] is None
-                   for i, j in car.car_coordinates()):
+        if not all(coor in board
+                   and board[coor] is None
+                   for coor in car.car_coordinates()):
             return False
         self.__cars[name] = car
-        for i, j in car.car_coordinates():
-            board[i, j] = car
+        for coor in car.car_coordinates():
+            board[coor] = car
         return True
 
     def move_car(self, name, movekey):
@@ -143,16 +143,16 @@ class Board:
         car = self.__cars[name]
         if movekey not in car.possible_moves():
             return False
-        if not all((i, j) in self.__board
-                   and self.__board[i, j] is None
-                   for i, j in car.movement_requirements(movekey)):
+        if not all(coor in self.__board
+                   and self.__board[coor] is None
+                   for coor in car.movement_requirements(movekey)):
             return False
-        for i, j in car.car_coordinates():
-            self.__board[i, j] = None
+        for coor in car.car_coordinates():
+            self.__board[coor] = None
         car.move(movekey)
-        for i, j in car.car_coordinates():
-            self.__board[i, j] = car
+        for coor in car.car_coordinates():
+            self.__board[coor] = car
         return True
 
     def __repr__(self):
-        return f"Board({self.__board}, {self.__cars})"
+        return f"Board({self.__cars.values()})"

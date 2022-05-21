@@ -1,5 +1,13 @@
+#################################################################################
+# FILE: game.py
+# WRITER: Oryan Hassidim , oryan.hassidim , 319131579
+# EXERCISE: Intro2cs2 ex9 2021-2022
+# DESCRIPTION: Game class for rush-hour game.
+# NOTES:
+#################################################################################
+
 from typing import Tuple, List, Optional, Dict
-from sys import argv, exit
+from sys import argv
 from helper import load_json
 from os.path import isfile
 
@@ -12,8 +20,7 @@ Movekey = str  # Literal['u', 'd', 'r', 'l']
 
 VERTICAL = 0
 HORIZONTAL = 1
-ORIENTATIONS = {0: (1, 0), 1: (0, 1)}
-DIRECTIONS = {'u': (-1, 0), 'd': (1, 0), 'r': (0, 1), 'l': (1, 0)}
+ORIENTATIONS = {0, 1}
 MOVE_KEYS = {'u', 'd', 'r', 'l'}
 SUPPORTED_LENGTHS = {2, 3, 4}
 SUPPORTED_NAMES = {'Y', 'B', 'O', 'W', 'G', 'R'}
@@ -111,7 +118,11 @@ class Game:
 
 def initialize_board(json):
     board = Board()
-    for name, (length, (i, j), orientation) in json.items():
+    for name, val in json.items():
+        try:
+             (length, (i, j), orientation) = val
+        except:
+            continue
         if name not in SUPPORTED_NAMES:
             continue
         if length not in SUPPORTED_LENGTHS:

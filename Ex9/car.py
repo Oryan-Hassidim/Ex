@@ -1,3 +1,11 @@
+#################################################################################
+# FILE: car.py
+# WRITER: Oryan Hassidim , oryan.hassidim , 319131579
+# EXERCISE: Intro2cs2 ex9 2021-2022
+# DESCRIPTION: Car class for rush-hour game.
+# NOTES:
+#################################################################################
+
 from typing import Tuple, Dict
 
 Coordinate = Tuple[int, int]
@@ -6,16 +14,16 @@ Movekey = str  # Literal['u', 'd', 'r', 'l']
 
 VERTICAL = 0
 HORIZONTAL = 1
-ORIENTATIONS = {0: (1, 0), 1: (0, 1)}
-DIRECTIONS = {'u': (-1, 0), 'd': (1, 0), 'r': (0, 1), 'l': (0, -1)}
-MOVE_KEYS = {'u', 'd', 'r', 'l'}
-SUPPORTED_LENGTHS = {2, 3, 4}
-
 
 class Car:
     """
     Game object of single car on the board.
     """
+    
+    ORIENTATIONS = {0: (1, 0), 1: (0, 1)}
+    DIRECTIONS = {'u': (-1, 0), 'd': (1, 0), 'r': (0, 1), 'l': (0, -1)}
+
+    
     def __add_coordinates(coor1, coor2):
         """
         :param coor1: A tuple of coordinates.
@@ -37,7 +45,7 @@ class Car:
         # implement your code and erase the "pass"
         if length <= 0:
             raise ValueError("length must be positive")
-        if orientation not in ORIENTATIONS:
+        if orientation not in Car.ORIENTATIONS:
             raise ValueError("orientation must be 0 or 1")
         self.__name = name
         self.__length = length
@@ -48,7 +56,7 @@ class Car:
         """
         :return: A list of coordinates the car is in
         """
-        d1, dj = ORIENTATIONS[self.__orientation]
+        d1, dj = Car.ORIENTATIONS[self.__orientation]
         return [Car.__add_coordinates(self.__location, (d*d1, d*dj)) for d in range(self.__length)]
 
     def possible_moves(self):
@@ -81,7 +89,7 @@ class Car:
             # raise ValueError("movekey must be one of possible movekeys")
             return []
         last_coor = self.car_coordinates()[Car.__first_or_last[movekey]]
-        return [Car.__add_coordinates(last_coor, DIRECTIONS[movekey])]
+        return [Car.__add_coordinates(last_coor, Car.DIRECTIONS[movekey])]
 
     def move(self, movekey):
         """ 
@@ -89,13 +97,13 @@ class Car:
         :return: True upon success, False otherwise
         """
         # implement your code and erase the "pass"
-        if movekey not in MOVE_KEYS:
+        if movekey not in Car.DIRECTIONS:
             # raise ValueError("movekey must be one of 'udrl'")
             return False
         if movekey not in self.possible_moves():
             return False
         self.__location = Car.__add_coordinates(
-            self.__location, DIRECTIONS[movekey])
+            self.__location, Car.DIRECTIONS[movekey])
         return True
 
     def get_name(self):
