@@ -40,15 +40,33 @@
     <Compile Include="lab9.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="test_board.py" />
-    <Compile Include="test_car.py" />
-    <Compile Include="test_ex9.py">
+    <Compile Include="Ex9_Test\A\board.py" />
+    <Compile Include="Ex9_Test\A\car.py" />
+    <Compile Include="Ex9_Test\A\game.py" />
+    <Compile Include="Ex9_Test\helper.py" />
+    <Compile Include="Ex9_Test\_test_wcar_wboard_game.py" />
+    <Compile Include="Ex9_Test\_test_wboard_game.py" />
+    <Compile Include="Ex9_Test\_test_wcar_game.py" />
+    <Compile Include="Ex9_Test\_test_wcar_board.py" />
+    <Compile Include="Ex9_Test\_test_board.py" />
+    <Compile Include="Ex9_Test\_test_car.py" />
+    <Compile Include="Ex9_Test\test_ex9.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="test_game.py" />
+    <Compile Include="Ex9_Test\_test_game.py" />
+    <Compile Include="Ex9_Test\W\board.py" />
+    <Compile Include="Ex9_Test\W\car.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="car_config.json" />
+    <Content Include="Ex9_Test\READ ME EX9 TESTS.docx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Ex9_Test\" />
+    <Folder Include="Ex9_Test\A\" />
+    <Folder Include="Ex9_Test\B\" />
+    <Folder Include="Ex9_Test\C\" />
+    <Folder Include="Ex9_Test\W\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

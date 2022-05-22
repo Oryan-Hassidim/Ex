@@ -18,12 +18,16 @@ def test_get_name():
 def test_initial_car_coordinates():
     car1 = Car("test", 4, (2,-2), VERTICAL)
     car2 = Car("test", 4, (2,2), HORIZONTAL)
+    car3 = Car("test", 1, (2, 2), VERTICAL)
     assert sorted([
         (2,-2), (3,-2), (4,-2), (5,-2)
     ]) == sorted(car1.car_coordinates())
     assert sorted([
         (2,2), (2,3), (2,4), (2,5)
     ]) == sorted(car2.car_coordinates())
+    assert sorted([
+        (2, 2)
+    ]) == sorted(car3.car_coordinates())
 
 
 def test_possible_moves():

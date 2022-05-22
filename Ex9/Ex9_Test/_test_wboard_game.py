@@ -40,6 +40,9 @@ class Helper:
 
         # Since the process library doesn't know if all standard input has been consumed/processed, I make another
         # test to ensure that we don't win when given less than the needed moves to win.
+        if len(moves) == 0:
+            return
+
         not_enough_moves_st = "\n".join(moves[:-1])
         err = self._run_game_process(car_cfg, not_enough_moves_st)
         assert "EOF" in err, "When providing less than the exact moves for victory, the game should've " \
@@ -56,14 +59,7 @@ class Helper:
 
     @staticmethod
     def __find_game_py():
-        cur_dir = str(Path.cwd().parent)
-        walk = os.walk(cur_dir, topdown=False)
-        for cur_dir, _subdirs, files in walk:
-            if "game.py" in files:
-                return Path(cur_dir, "game.py")
-        raise ValueError(f"Couldn't find game.py beginning at {cur_dir}\n."
-                         f"Are you sure you placed the tests within the exercise9\n"
-                         f"project folder(or in a subfolder inside it?)")
+        return os.path.join("TESTS", "game.py")
 
 
 def test_ensure_tests_configured_corrrectly():
@@ -78,44 +74,19 @@ def create_car_config(cars_dict):
 
 def test_valid_simple():
     cars = {
-        "R": [2, [3, 0], 1],
-        "O": [3, [1, 4], 0]
+        "R": [2, [0, 1], 1]
     }
 
     cfg_file = create_car_config(cars)
     test_helper = Helper()
 
-    test_helper.finishes_with_exact_moves(cfg_file, ["O,u"] + ["R,r"] * 6)
     test_helper.finishes_with_exact_moves(
-        cfg_file, ["O,u"] + ["R,r"] * 5 + ["R,l", "R,r", "R,r"])
-    test_helper.finishes_with_exact_moves(
-        cfg_file, ["O,u"] + ["Invalid,Cowabunga"] * 20 + ["O,u"] * 1337 + ["R,r"] * 6)
-    test_helper.finishes_with_exact_moves(
-        cfg_file, ["O,u"] + ["Invalid command"] * 20 + ["R,r"] * 6)
-
-    test_helper.fails_with_given_moves(cfg_file, ["O,u"] + ["R,r"] * 2)
+        cfg_file, ["R,l", "O,u"] + ["R,r"] * 3)
     test_helper.fails_with_given_moves(cfg_file, ["O,u"] + ["R,r"] * 1)
-
+    # automatic win
     cars = {
-        "R": [2, [3, 3], 1],
-        "W": [2, [0, 0], 1],
-        "Y": [3, [1, 6], 0],
-        "O": [-3, [1, 6], 0],
-        "B": [3, [1, -6], 0],
-        "G": [3, [1, -6], 2],
-        "GG": [2, [3, 0], 0]
+        "R":[4,[0,1],1]
     }
-
     cfg_file = create_car_config(cars)
-    #test_helper = Helper()
+    test_helper.finishes_with_exact_moves(cfg_file, [])
 
-    test_helper.finishes_with_exact_moves(cfg_file, ["Y,u"] + ["R,r"] * 3)
-    test_helper.finishes_with_exact_moves(
-        cfg_file, ["Y,d"] * 3 + ["R,r"] * 2 + ["R,l", "R,r", "R,r"])
-    test_helper.finishes_with_exact_moves(
-        cfg_file, ["Y,u"] + ["Invalid,Cowabunga"] * 20 + ["O,u"] * 1337 + ["R,r"] * 3)
-    test_helper.finishes_with_exact_moves(
-        cfg_file, ["Y,d"] * 3 + ["Invalid command"] * 20 + ["R,r"] * 3)
-
-    test_helper.fails_with_given_moves(cfg_file, ["O,u"] + ["R,r"] * 3)
-    test_helper.fails_with_given_moves(cfg_file, ["Y,u"] + ["R,r"] * 2)
