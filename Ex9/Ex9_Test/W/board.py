@@ -17,6 +17,8 @@ class Board:
         return (0, 4)
 
     def cell_content(self, coordinate):
+        if coordinate not in self.cell_list():
+            raise ValueError("Invalid coordinate")
         for car in self.__cars.values():
             if coordinate in car.car_coordinates():
                 return car.get_name()

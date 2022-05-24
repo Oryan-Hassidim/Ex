@@ -58,15 +58,7 @@ class Helper:
 
     @staticmethod
     def __find_game_py():
-        return os.path.join("TESTS", "game.py")
-        #cur_dir = str(Path.cwd().parent)
-        #walk = os.walk(cur_dir, topdown=False)
-        # for cur_dir, _subdirs, files in walk:
-        #    if "game.py" in files:
-        #        return Path(cur_dir, "game.py")
-        # raise ValueError(f"Couldn't find game.py beginning at {cur_dir}\n."
-        #                 f"Are you sure you placed the tests within the exercise9\n"
-        #                 f"project folder(or in a subfolder inside it?)")
+        return "game.py"
 
 
 def test_ensure_tests_configured_corrrectly():
@@ -80,6 +72,10 @@ def create_car_config(cars_dict):
 
 
 def test_valid_simple():
+    source_path = Path(__file__).resolve()
+    source_dir = source_path.parent
+    if os.getcwd() != source_dir:
+        os.chdir(source_dir)
     cars = {
         "R": [2, [3, 0], 1],
         "O": [3, [1, 4], 0]
@@ -92,9 +88,11 @@ def test_valid_simple():
     test_helper.finishes_with_exact_moves(
         cfg_file, ["O,u"] + ["R,r"] * 5 + ["R,l", "R,r", "R,r"])
     test_helper.finishes_with_exact_moves(
-        cfg_file, ["O,u"] + ["Invalid,Cowabunga"] * 20 + ["O,u"] * 1337 + ["R,r"] * 6)
+        cfg_file, ["O,u"] + ["Invalid,Cowabunga"] * 10 + ["O,u"] * 10 + ["R,r"] * 6)
     test_helper.finishes_with_exact_moves(
-        cfg_file, ["O,u"] + ["Invalid command"] * 20 + ["R,r"] * 6)
+        cfg_file, ["O,u"] + ["Invalid command"] * 10 + ["R,r"] * 6)
+    test_helper.finishes_with_exact_moves(
+        cfg_file, ["O,u"] + ["Invalid command"] * 10 + ["R,r"] * 3 + ["!"])
 
     test_helper.fails_with_given_moves(cfg_file, ["O,u"] + ["R,r"] * 2)
     test_helper.fails_with_given_moves(cfg_file, ["O,u"] + ["R,r"] * 1)
@@ -122,9 +120,9 @@ def test_valid_simple():
     test_helper.finishes_with_exact_moves(
         cfg_file, ["Y,d"] * 3 + ["R,r"] * 2 + ["R,l", "R,r", "R,r"])
     test_helper.finishes_with_exact_moves(
-        cfg_file, ["Y,u"] + ["Invalid,Cowabunga"] * 20 + ["O,u"] * 1337 + ["R,r"] * 3)
+        cfg_file, ["Y,u"] + ["Invalid,Cowabunga"] * 10 + ["O,u"] * 10 + ["R,r"] * 3)
     test_helper.finishes_with_exact_moves(
-        cfg_file, ["Y,d"] * 3 + ["Invalid command"] * 20 + ["R,r"] * 3)
+        cfg_file, ["Y,d"] * 3 + ["Invalid command"] * 10 + ["R,r"] * 3)
 
     test_helper.fails_with_given_moves(cfg_file, ["O,u"] + ["R,r"] * 3)
     test_helper.fails_with_given_moves(cfg_file, ["Y,u"] + ["R,r"] * 2)

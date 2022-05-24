@@ -59,7 +59,7 @@ class Helper:
 
     @staticmethod
     def __find_game_py():
-        return os.path.join("TESTS", "game.py")
+        return "game.py"
 
 
 def test_ensure_tests_configured_corrrectly():
@@ -73,8 +73,13 @@ def create_car_config(cars_dict):
 
 
 def test_valid_simple():
+    source_path = Path(__file__).resolve()
+    source_dir = source_path.parent
+    if os.getcwd() != source_dir:
+        os.chdir(source_dir)
     cars = {
-        "R": [2, [0, 1], 1]
+        "R": [2, [0, 1], 1],
+        "Y": [2, [2, 2], 0]
     }
 
     cfg_file = create_car_config(cars)
@@ -85,8 +90,7 @@ def test_valid_simple():
     test_helper.fails_with_given_moves(cfg_file, ["O,u"] + ["R,r"] * 1)
     # automatic win
     cars = {
-        "R":[4,[0,1],1]
+        "R": [4, [0, 1], 1]
     }
     cfg_file = create_car_config(cars)
     test_helper.finishes_with_exact_moves(cfg_file, [])
-

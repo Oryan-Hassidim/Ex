@@ -56,8 +56,8 @@ class Game:
         print("Valid commands are: ")
         for color, direction, description in self.__board.possible_moves():
             print(f"{color},{direction}  --  {description}")
-        print("\nCurrent state:")
-        print(self.__board, end="\n\n")
+        # print("\nCurrent state:")
+        # print(self.__board, end="\n\n")
 
     def __single_turn(self):
         """
@@ -131,7 +131,7 @@ def initialize_board(json):
             continue
         if orientation not in ORIENTATIONS:
             continue
-        try:
+        try:  # for exceptions from the initializer
             car = Car(name, length, (i, j), orientation)
             board.add_car(car)
         except Exception as e:
