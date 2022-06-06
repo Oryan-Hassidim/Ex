@@ -7,11 +7,17 @@ from typing import Optional, List
 class Node:
     def __init__(self, data: Optional[str], positive_child=None, negative_child=None):
         self.data = data
-        self.positive_child: Node = positive_child
-        self.negative_child: Node = negative_child
+        self.positive_child = positive_child
+        self.negative_child = negative_child
 
     def is_leaf(self):
         return self.positive_child is None and self.negative_child is None
+
+    def __eq__(self, __o: object) -> bool:
+        return (isinstance(__o, Node)
+                and self.data == __o.data
+                and self.positive_child == __o.positive_child
+                and self.negative_child == __o.negative_child)
 
     def __str__(self) -> str:
         left = str(self.positive_child) if self.positive_child else None
@@ -57,10 +63,9 @@ def parse_data(filepath):
         return records
 
 
-def validate_type(val, type, message=None):
-    if not isinstance(val, type):
-        raise TypeError(
-            message if message else f'Expected {type}, got {type(val)}')
+def validate_type(val, _type, message=None):
+    if not isinstance(val, _type):
+        raise TypeError(message if message else f'Expected {_type} got {_type(val)}')
 
 
 def validate_elements_type(iterable, type):
@@ -158,32 +163,27 @@ class Diagnoser:
     @staticmethod
     def minimize_core(node: Node, remove_empty):
         if node.is_leaf():
-            return
-        Diagnoser.minimize_core(node.negative_child, remove_empty)
-        Diagnoser.minimize_core(node.positive_child, remove_empty)
+            return node
+        node.negative_child = Diagnoser.minimize_core(
+            node.negative_child, remove_empty)
+        node.positive_child = Diagnoser.minimize_core(
+            node.positive_child, remove_empty)
         if (not node.is_leaf()
-            and node.positive_child.is_leaf()
-            and node.positive_child.is_leaf()
-            and node.negative_child.data == node.positive_child.data):
-            node.data = node.negative_child.data
-            node.negative_child = None
-            node.positive_child = None
+            and node.negative_child == node.positive_child):
+            return node.negative_child
         if node.is_leaf() or not remove_empty:
-            return
+            return node
         if node.negative_child.data is None:
-            node.data = node.positive_child.data
-            node.negative_child = node.positive_child.negative_child
-            node.positive_child = node.positive_child.positive_child
-        elif node.positive_child.data is None:
-            node.data = node.negative_child.data
-            node.positive_child = node.negative_child.positive_child
-            node.negative_child = node.negative_child.negative_child
+            return node.positive_child
+        if node.positive_child.data is None:
+            return node.negative_child
+        return node
 
     def minimize(self, remove_empty=False):
         """
-        Minimazes the root of the diagnoser.
+        Minimizes the root of the diagnoser.
         """
-        self.minimize_core(self.root, remove_empty)
+        self.root = self.minimize_core(self.root, remove_empty)
 
     def __str__(self):
         return str(self.root)
@@ -228,8 +228,8 @@ def build_tree(records, symptoms):
     """
     validate_type(records, list)
     validate_type(symptoms, list)
-    validate_elements_type(records, Record)
     validate_elements_type(symptoms, str)
+    validate_elements_type(records, Record)
     return Diagnoser(build_tree_core(records, symptoms[::-1], set(), set()))
 
 
@@ -247,7 +247,6 @@ def optimal_tree(records, symptoms, depth):
 
 
 if __name__ == "__main__":
-
     # Manually build a simple tree.
     #                cough
     #          Yes /       \ No
@@ -303,11 +302,11 @@ if __name__ == "__main__":
     records = parse_data("Data/small_data.txt")
     symptoms = ["congestion", "fever", "irritability", "headache"]
     tree = build_tree(records, symptoms)
-    print(str(tree), end="\n\n")
+    print(repr(tree).replace("Node(", "\nNode("), end="\n\n")
     tree.minimize()
-    print(str(tree), end="\n\n")
+    print(repr(tree).replace("Node(", "\nNode("), end="\n\n")
     tree.minimize(True)
-    print(str(tree), end="\n\n")
+    print(repr(tree).replace("Node(", "\nNode("), end="\n\n")
     print()
 
     record1 = Record("influenza", ["cough", "fever"])
@@ -324,6 +323,116 @@ if __name__ == "__main__":
             symptoms = {symp for record in records for symp in record.symptoms}
             symptoms = list(symptoms)
             diagnoser = optimal_tree(records, symptoms, len(symptoms) // 2)
+            #print(diagnoser)
             diagnoser.minimize(True)
             success_rate = diagnoser.calculate_success_rate(records)
             print(f'Success rate of {file} is {success_rate}')
+            print(repr(diagnoser).replace("Node(", "\nNode("),
+                 end="\n\n")
+    d = Diagnoser(Node("Cold"))
+    print(d.paths_to_illness("Cold"))
+    print(d.calculate_success_rate([]))
+    recs = [Record("1", ["2","3"]), 2]
+    try:
+        build_tree(recs, ["1"])
+    except TypeError:
+        print("TypeError")
+    try:
+        optimal_tree(recs, ["1"], 1)
+    except TypeError:
+        print("TypeError")
+    recs = [Record("1", ["2", "3"]), Record("4",["5"])]
+    try:
+        build_tree(recs, ["1", 2])
+    except TypeError:
+        print("TypeError")
+    try:
+        optimal_tree(recs, ["1"], -1)
+    except ValueError:
+        print("ValueError")
+    try:
+        optimal_tree(recs, ["1"], 2)
+    except ValueError:
+        print("ValueError")
+    try:
+        optimal_tree(recs, ["1", "1"], 1)
+    except ValueError:
+        print("ValueError")
+    try:
+        optimal_tree(recs, ["1", 2], 1)
+    except TypeError:
+        print("TypeError")
+    
+
+#Diagnoser(
+#    Node('congestion',
+#         Node('fever',
+#              Node('irritability',
+#                   Node('headache',
+#                        Node(None),
+#                        Node(None)),
+#                   Node('headache',
+#                        Node(None),
+#                        Node(None))),
+#              Node('irritability',
+#                   Node('headache',
+#                        Node(None),
+#                        Node(None)),
+#                   Node('headache',
+#                        Node('cold'),
+#                        Node(None)))),
+#         Node('fever',
+#              Node('irritability',
+#                   Node('headache',
+#                        Node('meningitis'),
+#                        Node('meningitis')),
+#                   Node('headache',
+#                        Node('covid-19'),
+#                        Node('strep'))),
+#              Node('irritability',
+#                   Node('headache',
+#                        Node('meningitis'),
+#                        Node(None)),
+#                   Node('headache',
+#                        Node('mono'),
+#                        Node('healthy'))))))
+
+
+#Diagnoser(
+#    Node('congestion',
+#         Node('fever',
+#              Node(None),
+#              Node('irritability',
+#                   Node(None),
+#                   Node('headache',
+#                        Node('cold'),
+#                        Node(None)))),
+#         Node('fever',
+#              Node('irritability',
+#                   Node('meningitis'),
+#                   Node('headache',
+#                        Node('covid-19'),
+#                        Node('strep'))),
+#              Node('irritability',
+#                   Node('headache',
+#                        Node('meningitis'),
+#                        Node(None)),
+#                   Node('headache',
+#                        Node('mono'),
+#                        Node('healthy'))))))
+
+
+#Diagnoser(
+#    Node('congestion',
+#         Node('cold'),
+#         Node('fever',
+#              Node('irritability',
+#                   Node('meningitis'),
+#                   Node('headache',
+#                        Node('covid-19'),
+#                        Node('strep'))),
+#              Node('irritability',
+#                   Node('meningitis'),
+#                   Node('headache',
+#                        Node('mono'),
+#                        Node('healthy'))))))
