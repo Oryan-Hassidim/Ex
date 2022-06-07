@@ -14,10 +14,11 @@ class Node:
         return self.positive_child is None and self.negative_child is None
 
     def __eq__(self, __o: object) -> bool:
-        return (isinstance(__o, Node)
-                and self.data == __o.data
-                and self.positive_child == __o.positive_child
-                and self.negative_child == __o.negative_child)
+        return (self is __o or
+                (isinstance(__o, Node)
+                 and self.data == __o.data
+                 and self.positive_child == __o.positive_child
+                 and self.negative_child == __o.negative_child))
 
     def __str__(self) -> str:
         left = str(self.positive_child) if self.positive_child else None
@@ -65,7 +66,8 @@ def parse_data(filepath):
 
 def validate_type(val, _type, message=None):
     if not isinstance(val, _type):
-        raise TypeError(message if message else f'Expected {_type} got {_type(val)}')
+        raise TypeError(
+            message if message else f'Expected {_type} got {_type(val)}')
 
 
 def validate_elements_type(iterable, type):
@@ -145,12 +147,10 @@ class Diagnoser:
         """
         Returns all illnesses sorted by frequency.
         """
-        illnesses_times = Counter()
-        for illness, _ in get_leaves_and_pathes(self.root):
-            illnesses_times[illness] += 1
-        if None in illnesses_times:
-            illnesses_times.pop(None)
-        return sorted(illnesses_times.keys(), key=lambda x: illnesses_times[x], reverse=True)
+        times = Counter(i
+                        for i, _ in get_leaves_and_pathes(self.root)
+                        if i is not None)
+        return [i for i, _ in times.most_common()]
 
     def paths_to_illness(self, illness):
         """
@@ -169,7 +169,7 @@ class Diagnoser:
         node.positive_child = Diagnoser.minimize_core(
             node.positive_child, remove_empty)
         if (not node.is_leaf()
-            and node.negative_child == node.positive_child):
+                and node.negative_child == node.positive_child):
             return node.negative_child
         if node.is_leaf() or not remove_empty:
             return node
@@ -247,6 +247,7 @@ def optimal_tree(records, symptoms, depth):
 
 
 if __name__ == "__main__":
+    pass
     # Manually build a simple tree.
     #                cough
     #          Yes /       \ No
@@ -254,117 +255,117 @@ if __name__ == "__main__":
     #   Yes /     \ No
     # covid-19   cold
 
-    flu_leaf = Node("covid-19", None, None)
-    cold_leaf = Node("cold", None, None)
-    inner_vertex = Node("fever", flu_leaf, cold_leaf)
-    healthy_leaf = Node("healthy", None, None)
-    root = Node("cough", inner_vertex, healthy_leaf)
+    #flu_leaf = Node("covid-19", None, None)
+    #cold_leaf = Node("cold", None, None)
+    #inner_vertex = Node("fever", flu_leaf, cold_leaf)
+    #healthy_leaf = Node("healthy", None, None)
+    #root = Node("cough", inner_vertex, healthy_leaf)
 
-    diagnoser = Diagnoser(root)
+    #diagnoser = Diagnoser(root)
 
-    diagnoser2 = Diagnoser(
-        Node("Cough",
-             Node("Headache",
-                  Node("Covid-19"),
-                  Node("Cold")
-                  ),
-             Node("Headache",
-                  Node("Cold"),
-                  Node("Healthy")
-                  )
-             ))
+    # diagnoser2 = Diagnoser(
+    #    Node("Cough",
+    #         Node("Headache",
+    #              Node("Covid-19"),
+    #              Node("Cold")
+    #              ),
+    #         Node("Headache",
+    #              Node("Cold"),
+    #              Node("Healthy")
+    #              )
+    #         ))
 
     # Simple test
-    diagnosis = diagnoser.diagnose(["cough"])
-    if diagnosis == "cold":
-        print("Test passed")
-    else:
-        print("Test failed. Should have printed cold, printed: ", diagnosis)
+    #diagnosis = diagnoser.diagnose(["cough"])
+    # if diagnosis == "cold":
+    #    print("Test passed")
+    # else:
+    #    print("Test failed. Should have printed cold, printed: ", diagnosis)
 
     # Add more tests for sections 2-7 here.
-    folder = "Data"
-    for file in os.listdir(folder):
-        if file.endswith(".txt"):
-            records = parse_data(os.path.join(folder, file))
-            success_rate = diagnoser.calculate_success_rate(records)
-            print(f'Success rate of {file} is {success_rate}')
-    print()
+    #folder = "Data"
+    # for file in os.listdir(folder):
+    #    if file.endswith(".txt"):
+    #        records = parse_data(os.path.join(folder, file))
+    #        success_rate = diagnoser.calculate_success_rate(records)
+    #        print(f'Success rate of {file} is {success_rate}')
+    # print()
 
-    print("All illnesses: ", diagnoser.all_illnesses())
-    print()
+    #print("All illnesses: ", diagnoser.all_illnesses())
+    # print()
 
-    print("Paths to covid-19: ", diagnoser.paths_to_illness("covid-19"))
-    print("Paths to cold: ", diagnoser.paths_to_illness("cold"))
-    print("Paths to Cold: ", diagnoser2.paths_to_illness("Cold"))
-    print()
+    #print("Paths to covid-19: ", diagnoser.paths_to_illness("covid-19"))
+    #print("Paths to cold: ", diagnoser.paths_to_illness("cold"))
+    #print("Paths to Cold: ", diagnoser2.paths_to_illness("Cold"))
+    # print()
 
     # Build a tree from the data.
-    records = parse_data("Data/small_data.txt")
-    symptoms = ["congestion", "fever", "irritability", "headache"]
-    tree = build_tree(records, symptoms)
-    print(repr(tree).replace("Node(", "\nNode("), end="\n\n")
-    tree.minimize()
-    print(repr(tree).replace("Node(", "\nNode("), end="\n\n")
-    tree.minimize(True)
-    print(repr(tree).replace("Node(", "\nNode("), end="\n\n")
-    print()
+    #records = parse_data("Data/small_data.txt")
+    #symptoms = ["congestion", "fever", "irritability", "headache"]
+    #tree = build_tree(records, symptoms)
+    #print(repr(tree).replace("Node(", "\nNode("), end="\n\n")
+    # tree.minimize()
+    #print(repr(tree).replace("Node(", "\nNode("), end="\n\n")
+    # tree.minimize(True)
+    #print(repr(tree).replace("Node(", "\nNode("), end="\n\n")
+    # print()
 
-    record1 = Record("influenza", ["cough", "fever"])
-    record2 = Record("cold", ["cough"])
-    records = [record1, record2]
+    #record1 = Record("influenza", ["cough", "fever"])
+    #record2 = Record("cold", ["cough"])
+    #records = [record1, record2]
 
-    print(build_tree(records, ["fever"]))
-    print(optimal_tree(records, ["cough", "fever"], 1))
-    print()
+    #print(build_tree(records, ["fever"]))
+    #print(optimal_tree(records, ["cough", "fever"], 1))
+    # print()
 
-    for file in os.listdir(folder):
-        if file.endswith(".txt"):
-            records = parse_data(os.path.join(folder, file))
-            symptoms = {symp for record in records for symp in record.symptoms}
-            symptoms = list(symptoms)
-            diagnoser = optimal_tree(records, symptoms, len(symptoms) // 2)
-            #print(diagnoser)
-            diagnoser.minimize(True)
-            success_rate = diagnoser.calculate_success_rate(records)
-            print(f'Success rate of {file} is {success_rate}')
-            print(repr(diagnoser).replace("Node(", "\nNode("),
-                 end="\n\n")
-    d = Diagnoser(Node("Cold"))
-    print(d.paths_to_illness("Cold"))
-    print(d.calculate_success_rate([]))
-    recs = [Record("1", ["2","3"]), 2]
-    try:
-        build_tree(recs, ["1"])
-    except TypeError:
-        print("TypeError")
-    try:
-        optimal_tree(recs, ["1"], 1)
-    except TypeError:
-        print("TypeError")
-    recs = [Record("1", ["2", "3"]), Record("4",["5"])]
-    try:
-        build_tree(recs, ["1", 2])
-    except TypeError:
-        print("TypeError")
-    try:
-        optimal_tree(recs, ["1"], -1)
-    except ValueError:
-        print("ValueError")
-    try:
-        optimal_tree(recs, ["1"], 2)
-    except ValueError:
-        print("ValueError")
-    try:
-        optimal_tree(recs, ["1", "1"], 1)
-    except ValueError:
-        print("ValueError")
-    try:
-        optimal_tree(recs, ["1", 2], 1)
-    except TypeError:
-        print("TypeError")
-    
+    # for file in os.listdir(folder):
+    #    if file.endswith(".txt"):
+    #        records = parse_data(os.path.join(folder, file))
+    #        symptoms = {symp for record in records for symp in record.symptoms}
+    #        symptoms = list(symptoms)
+    #        diagnoser = optimal_tree(records, symptoms, len(symptoms) // 2)
+    #        # print(diagnoser)
+    #        diagnoser.minimize(True)
+    #        success_rate = diagnoser.calculate_success_rate(records)
+    #        print(f'Success rate of {file} is {success_rate}')
+    #        print(repr(diagnoser).replace("Node(", "\nNode("),
+    #              end="\n\n")
+    #d = Diagnoser(Node("Cold"))
+    # print(d.paths_to_illness("Cold"))
+    # print(d.calculate_success_rate([]))
+    #recs = [Record("1", ["2", "3"]), 2]
+    # try:
+    #    build_tree(recs, ["1"])
+    # except TypeError:
+    #    print("TypeError")
+    # try:
+    #    optimal_tree(recs, ["1"], 1)
+    # except TypeError:
+    #    print("TypeError")
+    #recs = [Record("1", ["2", "3"]), Record("4", ["5"])]
+    # try:
+    #    build_tree(recs, ["1", 2])
+    # except TypeError:
+    #    print("TypeError")
+    # try:
+    #    optimal_tree(recs, ["1"], -1)
+    # except ValueError:
+    #    print("ValueError")
+    # try:
+    #    optimal_tree(recs, ["1"], 2)
+    # except ValueError:
+    #    print("ValueError")
+    # try:
+    #    optimal_tree(recs, ["1", "1"], 1)
+    # except ValueError:
+    #    print("ValueError")
+    # try:
+    #    optimal_tree(recs, ["1", 2], 1)
+    # except TypeError:
+    #    print("TypeError")
 
-#Diagnoser(
+
+# Diagnoser(
 #    Node('congestion',
 #         Node('fever',
 #              Node('irritability',
@@ -398,7 +399,7 @@ if __name__ == "__main__":
 #                        Node('healthy'))))))
 
 
-#Diagnoser(
+# Diagnoser(
 #    Node('congestion',
 #         Node('fever',
 #              Node(None),
@@ -422,7 +423,7 @@ if __name__ == "__main__":
 #                        Node('healthy'))))))
 
 
-#Diagnoser(
+# Diagnoser(
 #    Node('congestion',
 #         Node('cold'),
 #         Node('fever',

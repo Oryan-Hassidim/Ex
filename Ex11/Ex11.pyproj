@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="ex11.py" />
     <Compile Include="lab11.py" />
+    <Compile Include="lab12.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
