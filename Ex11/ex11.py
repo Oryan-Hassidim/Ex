@@ -365,41 +365,40 @@ if __name__ == "__main__":
     #    print("TypeError")
 
 
-# Diagnoser(
+#Diagnoser(
 #    Node('congestion',
-#         Node('fever',
-#              Node('irritability',
-#                   Node('headache',
+#            Node('fever',
+#                Node('irritability',
+#                    Node('headache',
 #                        Node(None),
 #                        Node(None)),
-#                   Node('headache',
+#                    Node('headache',
 #                        Node(None),
 #                        Node(None))),
-#              Node('irritability',
-#                   Node('headache',
+#                Node('irritability',
+#                    Node('headache',
 #                        Node(None),
 #                        Node(None)),
-#                   Node('headache',
+#                    Node('headache',
 #                        Node('cold'),
 #                        Node(None)))),
-#         Node('fever',
-#              Node('irritability',
-#                   Node('headache',
+#            Node('fever',
+#                Node('irritability',
+#                    Node('headache',
 #                        Node('meningitis'),
 #                        Node('meningitis')),
-#                   Node('headache',
+#                    Node('headache',
 #                        Node('covid-19'),
 #                        Node('strep'))),
-#              Node('irritability',
-#                   Node('headache',
+#                Node('irritability',
+#                    Node('headache',
 #                        Node('meningitis'),
 #                        Node(None)),
-#                   Node('headache',
+#                    Node('headache',
 #                        Node('mono'),
 #                        Node('healthy'))))))
 
-
-# Diagnoser(
+#Diagnoser(
 #    Node('congestion',
 #         Node('fever',
 #              Node(None),
@@ -422,8 +421,7 @@ if __name__ == "__main__":
 #                        Node('mono'),
 #                        Node('healthy'))))))
 
-
-# Diagnoser(
+#Diagnoser(
 #    Node('congestion',
 #         Node('cold'),
 #         Node('fever',

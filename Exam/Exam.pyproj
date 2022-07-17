@@ -2,16 +2,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>f057163d-7527-4317-91b1-5252647520ff</ProjectGuid>
+    <ProjectGuid>e456f990-6c6a-43af-af54-9676953b0583</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>ex11.py</StartupFile>
+    <StartupFile>2022_B_Aleph.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>Ex11</Name>
-    <RootNamespace>Ex11</RootNamespace>
-    <TestFramework>Pytest</TestFramework>
+    <Name>Exam</Name>
+    <RootNamespace>Exam</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,19 +21,11 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ex11.py" />
-    <Compile Include="lab11.py" />
-    <Compile Include="lab12.py" />
-    <Compile Include="lab13.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\big_data.txt" />
-    <Content Include="Data\medium_data.txt" />
-    <Content Include="Data\small_data.txt" />
-    <Content Include="Data\tiny_data.txt" />
+    <Compile Include="2019_A_Aleph.py" />
+    <Compile Include="2022_A_Aleph.py" />
+    <Compile Include="2022_A_Bet.py" />
+    <Compile Include="2022_B_Aleph.py" />
+    <Compile Include="rooms.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
