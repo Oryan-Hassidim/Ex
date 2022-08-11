@@ -21,10 +21,17 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="2017_B_Aleph.py" />
     <Compile Include="2019_A_Aleph.py" />
+    <Compile Include="2019_B_Bet.py" />
+    <Compile Include="2020_B_Bet.py" />
+    <Compile Include="2021_A_Summer.py" />
+    <Compile Include="2021_B_Aleph.py" />
     <Compile Include="2022_A_Aleph.py" />
     <Compile Include="2022_A_Bet.py" />
     <Compile Include="2022_B_Aleph.py" />
+    <Compile Include="2022_B_Bet.py" />
+    <Compile Include="25_07_22.py" />
     <Compile Include="rooms.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
