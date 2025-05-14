@@ -6,8 +6,8 @@ def f1(n, m):
             k = 1
             while k < len(liz) * len(liz[0]):
                 k *= 2
-                a, b = bla bla bla
-                liz[a][b] = bla bla
+                a, b = None # bla bla bla
+                liz[a][b] = None # bla bla
 
 
 def f2(n):

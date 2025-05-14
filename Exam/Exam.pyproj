@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>e456f990-6c6a-43af-af54-9676953b0583</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>2022_B_Aleph.py</StartupFile>
+    <StartupFile>who broke the production.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -33,6 +33,7 @@
     <Compile Include="2022_B_Bet.py" />
     <Compile Include="25_07_22.py" />
     <Compile Include="rooms.py" />
+    <Compile Include="who broke the production.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
